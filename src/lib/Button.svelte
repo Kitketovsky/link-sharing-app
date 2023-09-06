@@ -1,10 +1,14 @@
 <script lang="ts">
+  import type { HTMLButtonAttributes } from "svelte/elements";
+
   export let isDisabled = false;
   export let label = "";
   export let mode: "primary" | "secondary" = "primary";
+  export let type: HTMLButtonAttributes["type"] = "button";
 </script>
 
-<button disabled={isDisabled} class="heading-s" data-mode={mode}>{label}</button
+<button disabled={isDisabled} {type} class="heading-s" data-mode={mode}
+  >{label}</button
 >
 
 <style>

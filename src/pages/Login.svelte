@@ -1,15 +1,30 @@
-<script>
+<script lang="ts">
   import Button from "../lib/Button.svelte";
   import Input from "../lib/Input.svelte";
 
   import LargeLogoIcon from "./../assets/images/logo-devlinks-large.svg";
+  import EmailIcon from "./../assets/images/icon-email.svg";
+  import PasswordIcon from "./../assets/images/icon-password.svg";
+
+  let email = "";
+  let password = "";
+
+  $: form = {
+    email,
+    password,
+  };
+
+  function onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    //   console.log((event.target as HTMLFormElement).checkValidity());
+  }
 </script>
 
 <div class="wrapper">
   <div class="logo-wrapper">
     <img src={LargeLogoIcon} alt="Logo" />
   </div>
-  <form>
+  <form novalidate on:submit={onSubmit}>
     <div class="form-header">
       <h1 class="heading-m">Login</h1>
       <span class="body-m">Add your details below to get back into the app</span
@@ -17,9 +32,28 @@
     </div>
 
     <div class="form-body">
-      <Input placeholder="e.g. alex@email.com" />
-      <Input placeholder="Enter your password" />
-      <Button label="Login" />
+      <Input
+        label="Email address"
+        id="email"
+        bind:value={email}
+        icon={EmailIcon}
+        type="email"
+        placeholder="e.g. alex@email.com"
+        required
+      />
+
+      <Input
+        id="password"
+        label="Password"
+        bind:value={password}
+        icon={PasswordIcon}
+        type="password"
+        placeholder="Enter your password"
+        minlength="6"
+        required
+      />
+
+      <Button type="submit" label="Login" />
     </div>
 
     <div class="form-footer">

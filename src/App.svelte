@@ -12,6 +12,8 @@
   let path: string = "";
 
   onMount(() => {
+    path = window.location.pathname;
+
     const unsub = globalHistory.listen(({ location }) => {
       path = location.pathname;
     });
@@ -20,8 +22,6 @@
       unsub();
     };
   });
-
-  $: console.log(path === "/login");
 
   $: isLoginPage = path === "/login";
 </script>

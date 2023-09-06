@@ -1,3 +1,7 @@
+html {
+  font-size: 16px;
+}
+
 :root {
   font-family: "Instrument Sans", Inter, system-ui, Avenir, Helvetica, Arial,
     sans-serif;
@@ -56,6 +60,10 @@ body,
   min-height: 100vh;
 }
 
+.icon + .default {
+  padding-left: 44px;
+}
+
 .default {
   position: relative;
   border: none;
@@ -63,12 +71,9 @@ body,
   border-radius: 8px;
   outline: 1px solid var(--borders);
 
-  & ~ .icon {
-    padding-left: 44px;
-  }
-
   &:focus {
-    box-shadow: 0px 0px 32px var(--purple-hover);
+    box-shadow: 0px 0px 32px
+      color-mix(in srgb, var(--purple-hover), transparent 25%);
   }
 }
 
