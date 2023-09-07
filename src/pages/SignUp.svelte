@@ -9,15 +9,29 @@
 
   let email = "";
   let password = "";
+  let confirm = "";
 
   $: form = {
     email,
     password,
+    confirm,
   };
+
+  let isPasswordsEqual = true;
 
   function onSubmit(event: SubmitEvent) {
     event.preventDefault();
-    //   console.log((event.target as HTMLFormElement).checkValidity());
+
+    isPasswordsEqual = password === confirm;
+
+    if (
+      !isPasswordsEqual ||
+      !(event.target as HTMLFormElement).checkValidity()
+    ) {
+      return;
+    }
+
+    // Do your logic with the form
   }
 </script>
 
@@ -27,9 +41,8 @@
   </div>
   <form novalidate on:submit={onSubmit}>
     <div class="form-header">
-      <h1 class="heading-m">Login</h1>
-      <span class="body-m">Add your details below to get back into the app</span
-      >
+      <h1 class="heading-m">Create account</h1>
+      <span class="body-m">Let’s get you started sharing your links!</span>
     </div>
 
     <div class="form-body">
@@ -45,21 +58,33 @@
 
       <Input
         id="password"
-        label="Password"
+        label="Create password"
         bind:value={password}
         icon={PasswordIcon}
         type="password"
-        placeholder="Enter your password"
+        placeholder="At least 8 characters"
         minlength="8"
         required
       />
 
-      <Button type="submit" label="Login" />
+      <Input
+        id="confirm-password"
+        label="Confirm password"
+        bind:value={confirm}
+        icon={PasswordIcon}
+        type="password"
+        placeholder="At least 8 characters"
+        minlength="8"
+        required
+        errorMessage={isPasswordsEqual ? null : "Not equal"}
+      />
+
+      <Button type="submit" label="Create new account" />
     </div>
 
     <div class="form-footer">
-      <span>Don't have an account?</span>
-      <Link to="/signup">Create account</Link>
+      <span>Already have an account?</span>
+      <Link to="/login">Login</Link>
     </div>
   </form>
 </div>

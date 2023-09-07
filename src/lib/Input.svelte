@@ -13,7 +13,7 @@
 
   let isCheckValidity = false;
   let isValid = true;
-  let errorMessage: string | null = null;
+  export let errorMessage: string | null = null;
 
   export let validity: Partial<{ [key in keyof ValidityState]: string }> = {
     tooShort: "Too weak",
@@ -27,7 +27,7 @@
     function callback(event: SubmitEvent) {
       const formElement = event.target as HTMLFormElement;
       isCheckValidity = formElement.contains(inputRef);
-      isValid = inputRef.validity.valid;
+      isValid = inputRef.validity.valid && !errorMessage;
 
       if (!isValid) {
         for (let [errorType, customErrorMessage] of Object.entries(validity)) {
@@ -115,15 +115,13 @@
     }
   }
 
-  .wrapper[data-check="true"] {
-    & input:invalid {
-      outline: 1px solid var(--red);
-    }
-  }
-
   .wrapper[data-valid="false"] {
     & label {
       color: var(--red);
+    }
+
+    & input {
+      outline: 1px solid var(--red);
     }
   }
 

@@ -8,6 +8,7 @@
   import Profile from "./pages/Profile.svelte";
   import Navigation from "./lib/Navigation.svelte";
   import Login from "./pages/Login.svelte";
+  import SignUp from "./pages/SignUp.svelte";
 
   let path: string = "";
 
@@ -23,17 +24,18 @@
     };
   });
 
-  $: isLoginPage = path === "/login";
+  $: isAuthPages = path === "/login" || path === "/signup";
 </script>
 
 <Router>
-  <div class="layout" data-login={isLoginPage}>
+  <div class="layout" data-login={isAuthPages}>
     <main>
-      {#if !isLoginPage}
+      {#if !isAuthPages}
         <Navigation />
       {/if}
       <Route path="/" component={Main} />
       <Route path="/login" component={Login} />
+      <Route path="/signup" component={SignUp} />
       <Route path="/preview" component={Preview} />
       <Route path="/profile" component={Profile} />
     </main>
