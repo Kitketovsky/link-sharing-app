@@ -47,12 +47,17 @@
 
 <style>
   nav {
-    margin: 1.5rem;
-    padding: 1rem 1rem 1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    padding: 1.5rem 2.5rem 1.5rem 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     column-gap: 1.5rem;
+    background: var(--white);
+    z-index: 999;
+    box-shadow: 0px 5px 32px
+      color-mix(in srgb, var(--purple-hover), transparent 35%);
   }
 
   .tabs {

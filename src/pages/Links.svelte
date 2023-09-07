@@ -36,11 +36,15 @@
 
     links = links;
   }
+
+  $: console.log(links);
 </script>
 
 <div class="wrapper">
   <div class="phone-wrapper">
-    <img src={PhoneMockup} alt="Phone Mockup" />
+    <div class="fixed">
+      <img src={PhoneMockup} alt="Phone Mockup" />
+    </div>
   </div>
   <form class="editor-wrapper">
     <div class="editor-header">
@@ -103,6 +107,7 @@
 
 <style>
   .wrapper {
+    position: relative;
     display: flex;
     height: 100%;
     column-gap: 1.5rem;
@@ -111,10 +116,15 @@
   }
 
   .phone-wrapper {
+    position: relative;
+    top: 1.2rem;
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 45%;
+    width: 40%;
+
+    & .fixed {
+      position: fixed;
+    }
   }
 
   .editor-body {
@@ -143,7 +153,7 @@
   }
 
   .editor-wrapper {
-    width: 55%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     row-gap: 2.5rem;
