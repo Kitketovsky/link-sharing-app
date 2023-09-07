@@ -1,51 +1,17 @@
 <script lang="ts">
-  import PhoneMockup from "./../assets/images/illustration-phone-mockup.svg";
   import IllustrationEmpty from "./../assets/images/illustration-empty.svg";
   import Button from "../lib/Button.svelte";
   import DevLink from "../lib/DevLink.svelte";
-  import options from "../conts/options";
+  import options, { type IOptions } from "../conts/options";
 
-  import { v4 as uuidv4 } from "uuid";
+  import Phone from "../lib/Phone.svelte";
 
-  let links: { platform: string; url: string; id: string }[] = [];
-
-  function onAddNewLinkClick() {
-    const firstAvailable = [...options]
-      .filter((option) => !links.find((link) => link.platform === option.id))
-      .at(0);
-
-    if (!firstAvailable) return;
-
-    links = [...links, { platform: firstAvailable.id, url: "", id: uuidv4() }];
-  }
-
-  function onRemoveLinkClick(id: string) {
-    links = links.filter((link) => link.id !== id);
-  }
-
-  function onLinkDataChange(id: string, platform: string, event?: Event) {
-    const targetLink = links.find((link) => link.id === id);
-
-    if (!targetLink) return;
-
-    if (event) {
-      targetLink.url = (event.target as HTMLInputElement).value;
-    } else {
-      targetLink.platform = platform;
-    }
-
-    links = links;
-  }
-
-  $: console.log(links);
+  import { profile } from "../stores";
+  import { links } from "svelte-routing";
 </script>
 
 <div class="wrapper">
-  <div class="phone-wrapper">
-    <div class="fixed">
-      <img src={PhoneMockup} alt="Phone Mockup" />
-    </div>
-  </div>
+  <Phone />
   <form class="editor-wrapper">
     <div class="editor-header">
       <h1 class="heading-m">Customize your links</h1>
@@ -59,24 +25,24 @@
         label="+ Add New Link"
         mode="secondary"
         isFullWidth
-        on:click={onAddNewLinkClick}
+        on:click={profile.addNewLink}
         isDisabled={links.length === options.length}
       />
 
       {#if links.length}
-        {#each links as link, i (link.id)}
+        {#each $profile.links as link, i (link.id)}
           <DevLink
             options={[...options].filter(
               (option) =>
-                !links.find((link) => link.platform === option.id) ||
+                !$profile.links.find((link) => link.platform === option.id) ||
                 option.id === link.platform,
             )}
-            onRemoveLink={() => onRemoveLinkClick(link.id)}
+            onRemoveLink={() => profile.removeLink(link.id)}
             number={i + 1}
             {link}
-            onSelectChange={(optionId) => onLinkDataChange(link.id, optionId)}
+            onSelectChange={(optionId) => profile.changeLink(link.id, optionId)}
             on:input={(event) => {
-              onLinkDataChange(link.id, link.platform, event);
+              profile.changeLink(link.id, link.platform, event);
             }}
           />
         {/each}
@@ -113,18 +79,6 @@
     column-gap: 1.5rem;
     padding: 2.5rem;
     flex-grow: 1;
-  }
-
-  .phone-wrapper {
-    position: relative;
-    top: 1.2rem;
-    display: flex;
-    justify-content: center;
-    width: 40%;
-
-    & .fixed {
-      position: fixed;
-    }
   }
 
   .editor-body {
