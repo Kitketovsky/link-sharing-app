@@ -1,37 +1,26 @@
 <script lang="ts">
-  import {} from "svelte/animate";
   import ChevronDown from "./../assets/images/icon-chevron-down.svg";
+  import type { IOptions } from "../conts/options";
 
-  let options = [
-    {
-      id: 1,
-      name: "Option 1",
-    },
-    {
-      id: 2,
-      name: "Option 2",
-    },
-    {
-      id: 3,
-      name: "Option 3",
-    },
-  ];
+  export let options: IOptions = [];
+  export let value: string;
+  export let onSelectChange: (optionId: string) => void;
 
-  let current = options.at(0)?.id;
   let isOpen = false;
+  let current = options.at(0)?.id;
 
-  // $$props - get access to all props but it's not recommended
-
-  $: currentName = options.find(({ id }) => id === current)?.name;
+  $: selected = options.find(({ id }) => id === value);
 </script>
 
-<div class="wrapper">
+<div class="wrapper body-m">
+  <label for="platform" class="body-s">Platform</label>
   <div
-    class="current default"
+    class="selected-wrapper default"
     on:click={() => {
       isOpen = !isOpen;
     }}
     role="button"
+    id="platform"
     tabindex="0"
     data-open={isOpen}
     on:keydown={(event) => {
@@ -40,19 +29,23 @@
       }
     }}
   >
-    <span>
-      {currentName}
-    </span>
+    <div class="selected">
+      <svelte:component this={selected?.icon} />
+      <span>
+        {selected?.name}
+      </span>
+    </div>
     <img src={ChevronDown} alt="Chevron Icon" />
   </div>
 
   {#if isOpen}
     <div class="options">
-      {#each options as { id, name } (id)}
+      {#each options as { id, name, icon } (id)}
         <div
           on:click={() => {
-            current = id;
             isOpen = false;
+            current = id;
+            onSelectChange(id);
           }}
           tabindex="0"
           role="button"
@@ -60,10 +53,12 @@
             if (event.key === "Enter") {
               isOpen = false;
               current = id;
+              onSelectChange(id);
             }
           }}
           class="option"
         >
+          <svelte:component this={icon} />
           <span>{name}</span>
         </div>
       {/each}
@@ -72,10 +67,15 @@
 </div>
 
 <style>
-  .current {
+  .selected-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
+
+    &:focus {
+      outline: 1px solid var(--purple);
+    }
 
     & img {
       transition: transform 0.2s ease-in-out;
@@ -84,20 +84,51 @@
     &[data-open="true"] img {
       transform: rotate(-180deg);
     }
+
+    & .selected {
+      display: flex;
+      align-items: center;
+      column-gap: 1rem;
+    }
   }
 
   .wrapper {
     position: relative;
+
+    & label {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--dark-grey);
+    }
   }
 
   .options {
-    padding: 12px 16px;
+    background-color: var(--white);
+
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
     margin-top: 10px;
     position: absolute;
     outline: 1px solid var(--borders);
     width: 100%;
+    z-index: 10;
+    max-height: 300px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+
+  .option:hover,
+  .option[data-selected="true"] {
+    color: var(--purple);
+    & path {
+      fill: var(--purple);
+    }
   }
 
   .option:focus,
@@ -106,7 +137,7 @@
     color: var(--purple);
   }
 
-  .option + .option {
+  /* .option + .option {
     margin-top: 24px;
-  }
+  } */
 </style>

@@ -42,9 +42,13 @@
 </Router>
 
 <style>
+  main,
   .layout {
     display: flex;
     flex-direction: column;
+  }
+
+  .layout {
     min-height: 100vh;
 
     &[data-login="true"] {

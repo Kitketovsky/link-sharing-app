@@ -5,10 +5,16 @@
   export let label: string;
   export let mode: "primary" | "secondary" = "primary";
   export let type: HTMLButtonAttributes["type"] = "button";
+  export let isFullWidth = false;
 </script>
 
-<button disabled={isDisabled} {type} class="heading-s" data-mode={mode} on:click
-  >{label}</button
+<button
+  disabled={isDisabled}
+  {type}
+  class="heading-s"
+  data-mode={mode}
+  style={`width: ${isFullWidth ? "100%" : "initial"}`}
+  on:click>{label}</button
 >
 
 <style>
