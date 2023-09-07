@@ -1,7 +1,7 @@
 <script lang="ts">
   import { navigate } from "svelte-routing";
-  import SmallLogoIcon from "./../assets/images/logo-devlinks-small.svg";
-  import LargeLogoIcon from "./../assets/images/logo-devlinks-large.svg";
+  // import SmallLogoIcon from "./../assets/images/logo-devlinks-small.svelte";
+  import LargeLogoIcon from "./../assets/images/logo-devlinks-large.svelte";
   import Button from "./Button.svelte";
   import TabLink from "./TabLink.svelte";
 
@@ -24,7 +24,7 @@
 {:else}
   <nav>
     <div>
-      <img src={LargeLogoIcon} alt="Logo Icon" />
+      <svelte:component this={LargeLogoIcon} />
     </div>
 
     <div class="tabs">

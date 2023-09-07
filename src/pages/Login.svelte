@@ -2,9 +2,9 @@
   import Button from "../lib/Button.svelte";
   import Input from "../lib/Input.svelte";
 
-  import LargeLogoIcon from "./../assets/images/logo-devlinks-large.svg";
-  import EmailIcon from "./../assets/images/icon-email.svg";
-  import PasswordIcon from "./../assets/images/icon-password.svg";
+  import LargeLogoIcon from "./../assets/images/logo-devlinks-large.svelte";
+  import EmailIcon from "./../assets/images/icon-email.svelte";
+  import PasswordIcon from "./../assets/images/icon-password.svelte";
   import { Link } from "svelte-routing";
 
   let email = "";
@@ -23,7 +23,7 @@
 
 <div class="wrapper">
   <div class="logo-wrapper">
-    <img src={LargeLogoIcon} alt="Logo" />
+    <svelte:component this={LargeLogoIcon} />
   </div>
   <form novalidate on:submit={onSubmit}>
     <div class="form-header">

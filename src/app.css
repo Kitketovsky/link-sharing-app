@@ -99,3 +99,11 @@ body,
   font-size: 12px;
   line-height: 150%;
 }
+
+.text-grey {
+  color: var(--grey);
+}
+
+.text-dark-grey {
+  color: var(--dark-grey);
+}

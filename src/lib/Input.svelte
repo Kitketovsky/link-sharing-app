@@ -1,18 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  export let icon: string | null = null;
+  export let icon: ConstructorOfATypedSvelteComponent | null = null;
   export let placeholder: string;
-  export let value: string | number | null =
-    $$restProps.type === "text" ? "" : null;
-
-  export let id: string;
   export let label: string;
 
-  let inputRef: HTMLInputElement;
+  export let value: string | number | null;
 
-  let isCheckValidity = false;
-  let isValid = true;
   export let errorMessage: string | null = null;
 
   export let validity: Partial<{ [key in keyof ValidityState]: string }> = {
@@ -22,6 +16,10 @@
     badInput: "Bad input",
     typeMismatch: "Type mismatch",
   };
+
+  let inputRef: HTMLInputElement;
+  let isCheckValidity = false;
+  let isValid = true;
 
   onMount(() => {
     function callback(event: SubmitEvent) {
@@ -71,21 +69,22 @@
 </script>
 
 <div class="wrapper" data-check={isCheckValidity} data-valid={isValid}>
-  <label class="body-s" for={id}>{label}</label>
+  <label class="body-s" for={label.toString()}>{label}</label>
   <div class="input-wrapper">
     {#if icon}
       <div class="icon">
-        <img src={icon} alt="Icon" />
+        <svelte:component this={icon} />
       </div>
     {/if}
     <input
-      class="default"
+      class="default body-m"
       {placeholder}
       {value}
-      {id}
+      id={label.toString()}
       formnovalidate
-      aria-describedby={id}
+      aria-describedby={label.toString()}
       on:input={handleInput}
+      on:input
       bind:this={inputRef}
       {...$$restProps}
     />
