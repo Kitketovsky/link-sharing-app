@@ -32,6 +32,7 @@ a {
 
 button {
   font-family: inherit;
+  background: transparent;
 
   &:hover {
     cursor: pointer;
