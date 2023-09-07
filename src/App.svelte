@@ -9,14 +9,12 @@
   import Navigation from "./lib/Navigation.svelte";
   import Login from "./pages/Login.svelte";
   import SignUp from "./pages/SignUp.svelte";
-
-  let path: string = "";
+  import Links from "./pages/Links.svelte";
+  import { pathname } from "./stores";
 
   onMount(() => {
-    path = window.location.pathname;
-
     const unsub = globalHistory.listen(({ location }) => {
-      path = location.pathname;
+      pathname.set(location.pathname);
     });
 
     return () => {
@@ -24,7 +22,7 @@
     };
   });
 
-  $: isAuthPages = path === "/login" || path === "/signup";
+  $: isAuthPages = $pathname === "/login" || $pathname === "/signup";
 </script>
 
 <Router>
@@ -36,6 +34,7 @@
       <Route path="/" component={Main} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/links" component={Links} />
       <Route path="/preview" component={Preview} />
       <Route path="/profile" component={Profile} />
     </main>
@@ -47,8 +46,10 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding: 24px 0;
 
+    &[data-login="true"] {
+      padding: 24px 0;
+    }
     &[data-login="true"] main {
       display: flex;
       justify-content: center;
