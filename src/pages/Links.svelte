@@ -2,17 +2,19 @@
   import IllustrationEmpty from "./../assets/images/illustration-empty.svg";
   import Button from "../lib/Button.svelte";
   import DevLink from "../lib/DevLink.svelte";
-  import options, { type IOptions } from "../conts/options";
+  import options from "../conts/options";
 
   import Phone from "../lib/Phone.svelte";
 
   import { profile } from "../stores";
   import { links } from "svelte-routing";
+
+  let formRef: HTMLFormElement;
 </script>
 
 <div class="wrapper">
   <Phone />
-  <form class="editor-wrapper">
+  <form class="editor-wrapper" novalidate bind:this={formRef}>
     <div class="editor-header">
       <h1 class="heading-m">Customize your links</h1>
       <span class="body-m"
@@ -25,7 +27,15 @@
         label="+ Add New Link"
         mode="secondary"
         isFullWidth
-        on:click={profile.addNewLink}
+        on:click={(event) => {
+          const isFormValid = formRef.checkValidity();
+
+          if (!isFormValid) {
+            formRef.reportValidity();
+          } else {
+            profile.addNewLink();
+          }
+        }}
         isDisabled={links.length === options.length}
       />
 

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-
   export let icon: ConstructorOfATypedSvelteComponent | null = null;
   export let placeholder: string;
   export let label: string;
@@ -9,7 +7,9 @@
 
   export let errorMessage: string | null = null;
 
-  export let validity: Partial<{ [key in keyof ValidityState]: string }> = {
+  type ValidityProps = Partial<{ [key in keyof ValidityState]: string }>;
+
+  let initialValidity: ValidityProps = {
     tooShort: "Too weak",
     tooLong: "Too long",
     valueMissing: "Can't be empty",
@@ -17,33 +17,39 @@
     typeMismatch: "Type mismatch",
   };
 
-  let inputRef: HTMLInputElement;
+  export let validity: ValidityProps = {};
+
+  let finalValidity: ValidityProps = {
+    ...initialValidity,
+    ...validity,
+  };
+
   let isCheckValidity = false;
   let isValid = true;
 
-  onMount(() => {
-    function callback(event: SubmitEvent) {
-      const formElement = event.target as HTMLFormElement;
-      isCheckValidity = formElement.contains(inputRef);
-      isValid = inputRef.validity.valid && !errorMessage;
+  function onInputInvalid(event: Event) {
+    event.preventDefault();
 
-      if (!isValid) {
-        for (let [errorType, customErrorMessage] of Object.entries(validity)) {
-          const isError = inputRef.validity[errorType as keyof ValidityState];
+    const inputElement = event.target as HTMLInputElement;
+    const formElement = (event.target as HTMLInputElement).form;
 
-          if (isError) {
-            errorMessage = customErrorMessage || "Invalid input";
-          }
+    if (!formElement) return;
+
+    isCheckValidity = formElement.contains(inputElement);
+    isValid = inputElement.validity.valid && !errorMessage;
+
+    if (!isValid) {
+      for (let [errorType, customErrorMessage] of Object.entries(
+        finalValidity,
+      )) {
+        const isError = inputElement.validity[errorType as keyof ValidityState];
+
+        if (isError) {
+          errorMessage = customErrorMessage || "Invalid input";
         }
       }
     }
-
-    document.addEventListener("submit", callback);
-
-    return () => {
-      document.removeEventListener("submit", callback);
-    };
-  });
+  }
 
   function handleInput(event: Event) {
     const { type, value: targetValue } = event.target as HTMLInputElement;
@@ -81,11 +87,11 @@
       {placeholder}
       {value}
       id={label.toString()}
-      formnovalidate
+      formnovalidate={true}
       aria-describedby={label.toString()}
       on:input={handleInput}
       on:input
-      bind:this={inputRef}
+      on:invalid={onInputInvalid}
       {...$$restProps}
     />
     {#if errorMessage}

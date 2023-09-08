@@ -29,6 +29,8 @@
     icon={LinkIcon}
     value={link.url}
     on:input
+    validity={{ typeMismatch: "Please check the URL" }}
+    required
   />
 </div>
 
