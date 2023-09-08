@@ -3,10 +3,11 @@ import options from "./conts/options";
 import { v4 as uuidv4 } from "uuid";
 
 function createProfileStore() {
-  const { subscribe, update } = writable<{
+  const { subscribe, update, set } = writable<{
     name: string;
     surname: string;
-    avatar: string;
+    avatar: File | null;
+    email: string | null;
     links: {
       platform: string;
       url: string;
@@ -15,12 +16,15 @@ function createProfileStore() {
   }>({
     name: "",
     surname: "",
-    avatar: "",
+    avatar: null,
+    email: null,
     links: [],
   });
 
   return {
     subscribe,
+
+    set,
 
     addNewLink: () =>
       update((prev) => {

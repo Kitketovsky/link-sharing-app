@@ -1,7 +1,7 @@
 <script lang="ts">
   export let icon: ConstructorOfATypedSvelteComponent | null = null;
   export let placeholder: string;
-  export let label: string;
+  export let label: string | null = null;
 
   export let value: string | number | null;
 
@@ -75,7 +75,9 @@
 </script>
 
 <div class="wrapper" data-check={isCheckValidity} data-valid={isValid}>
-  <label class="body-s" for={label.toString()}>{label}</label>
+  {#if label}
+    <label class="body-s" for={label}>{label}</label>
+  {/if}
   <div class="input-wrapper">
     {#if icon}
       <div class="icon">
@@ -86,9 +88,7 @@
       class="default body-m"
       {placeholder}
       {value}
-      id={label.toString()}
       formnovalidate={true}
-      aria-describedby={label.toString()}
       on:input={handleInput}
       on:input
       on:invalid={onInputInvalid}

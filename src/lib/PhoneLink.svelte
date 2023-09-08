@@ -36,7 +36,7 @@
     color: var(--white);
 
     & + & {
-      margin-top: 20px;
+      margin-top: 1rem;
     }
 
     &[data-fill="true"] path {
