@@ -11,6 +11,8 @@
   import SignUp from "./pages/SignUp.svelte";
   import Links from "./pages/Links.svelte";
   import { pathname } from "./stores";
+  import ContentLayout from "./layouts/ContentLayout.svelte";
+  import Phone from "./lib/Phone.svelte";
 
   onMount(() => {
     const unsub = globalHistory.listen(({ location }) => {
@@ -34,9 +36,16 @@
       <Route path="/" component={Main} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
-      <Route path="/links" component={Links} />
+
+      {#if $pathname === "/links" || $pathname === "/profile"}
+        <ContentLayout>
+          <Phone />
+          <Route path="/links" component={Links} />
+          <Route path="/profile" component={Profile} />
+        </ContentLayout>
+      {/if}
+
       <Route path="/preview" component={Preview} />
-      <Route path="/profile" component={Profile} />
     </main>
   </div>
 </Router>
