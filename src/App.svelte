@@ -1,18 +1,19 @@
 <script lang="ts">
   import { globalHistory } from "svelte-routing/src/history";
-
   import { Router, Route } from "svelte-routing";
   import { onMount } from "svelte";
   import Main from "./pages/MainPage.svelte";
   import Preview from "./pages/PreviewPage.svelte";
   import Profile from "./pages/ProfilePage.svelte";
-  import Navigation from "./lib/Navigation.svelte";
   import Login from "./pages/LoginPage.svelte";
   import SignUp from "./pages/SignUpPage.svelte";
   import Links from "./pages/LinksPage.svelte";
-  import { pathname } from "./stores";
+  import { pathname, session } from "./stores";
   import ContentLayout from "./layouts/ContentLayout.svelte";
-  import Phone from "./lib/Phone.svelte";
+  import Navigation from "./components/Navigation.svelte";
+  import Phone from "./components/Phone.svelte";
+
+  import { supabase } from "./lib/supabase";
 
   onMount(() => {
     const unsub = globalHistory.listen(({ location }) => {
@@ -27,27 +28,38 @@
   $: {
     document.body.dataset.path = $pathname;
   }
-  $: isAuthPages = $pathname === "/login" || $pathname === "/signup";
+
+  onMount(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      session.set(data.session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, _session) => {
+      session.set(_session);
+    });
+  });
+
+  $: isProtectedPage = ["/links", "/profile", "/preview"].includes($pathname);
 </script>
 
 <Router>
-  <div class="layout" data-login={isAuthPages}>
+  <div class="layout" data-login={!isProtectedPage}>
     <main>
-      {#if !isAuthPages}
+      {#if isProtectedPage}
         <Navigation />
+        <ContentLayout>
+          {#if $pathname === "/links" || $pathname === "/profile"}
+            <Phone />
+          {/if}
+          <Route path="/links" component={Links} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/preview" component={Preview} />
+        </ContentLayout>
+      {:else}
+        <Route path="/" component={Main} />
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={SignUp} />
       {/if}
-      <Route path="/" component={Main} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={SignUp} />
-
-      <ContentLayout>
-        {#if $pathname === "/links" || $pathname === "/profile"}
-          <Phone />
-        {/if}
-        <Route path="/links" component={Links} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/preview" component={Preview} />
-      </ContentLayout>
     </main>
   </div>
 </Router>

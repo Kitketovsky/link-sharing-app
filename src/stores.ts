@@ -2,6 +2,8 @@ import { writable } from "svelte/store";
 import options from "./conts/options";
 import { v4 as uuidv4 } from "uuid";
 
+import type { AuthSession } from "@supabase/supabase-js";
+
 function createProfileStore() {
   const { subscribe, update, set } = writable<{
     name: string;
@@ -73,4 +75,5 @@ function createProfileStore() {
 }
 
 export const pathname = writable(window.location.pathname);
+export const session = writable<AuthSession | null>(null);
 export const profile = createProfileStore();
