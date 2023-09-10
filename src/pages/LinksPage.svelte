@@ -6,17 +6,28 @@
 
   import { profile } from "../stores";
   import FormLayout from "../layouts/FormLayout.svelte";
+  import { tick } from "svelte";
 
   let formRef: HTMLFormElement;
 
-  function onAddNewLinkClick() {
+  async function onAddNewLinkClick() {
     const isFormValid = formRef.checkValidity();
 
     if (!isFormValid) {
       formRef.reportValidity();
     } else {
       profile.addNewLink();
-      // TODO: scroll to last link and focus on input
+
+      await tick();
+
+      const newlyAddedInput = Array.from(
+        formRef.querySelectorAll("input[type='url'"),
+      ).at(-1);
+
+      if (newlyAddedInput) {
+        (newlyAddedInput as HTMLInputElement).scrollIntoView();
+        (newlyAddedInput as HTMLInputElement).focus();
+      }
     }
   }
 </script>

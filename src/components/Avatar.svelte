@@ -1,5 +1,4 @@
 <script lang="ts">
-  import clsx from "clsx";
   import { profile } from "../stores";
 
   let previewDataURI: string | null = null;
@@ -29,10 +28,7 @@
   export let size = 104;
 </script>
 
-<div
-  style="width: {size}; height: {size}"
-  class={clsx(previewDataURI && "withImage", "wrapper")}
->
+<div class="wrapper">
   {#if previewDataURI}
     <img src={previewDataURI} {alt} />
   {:else}
@@ -42,19 +38,19 @@
 
 <style>
   .wrapper {
-    width: 104px;
-    height: 104px;
+    margin: 1.5rem 0;
     border-radius: 50%;
     overflow: hidden;
-    margin: 1.5rem 0;
-  }
 
-  div.withImage {
-    outline: 6px solid var(--purple);
+    &:has(img) {
+      outline: 6px solid var(--purple);
+    }
   }
 
   img {
-    width: 100%;
-    height: auto;
+    display: block;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
   }
 </style>
