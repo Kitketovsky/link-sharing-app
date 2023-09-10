@@ -1,11 +1,13 @@
 <script lang="ts">
-  import Button from "../lib/Button.svelte";
-  import Input from "../lib/Input.svelte";
-
-  import LargeLogoIcon from "../assets/images/logo-devlinks-large.svelte";
+  import Input from "../components/Input.svelte";
   import EmailIcon from "../assets/images/icon-email.svelte";
   import PasswordIcon from "../assets/images/icon-password.svelte";
-  import { Link } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
+  import AuthFormLayout from "../layouts/AuthFormLayout.svelte";
+  import { supabase } from "../lib/supabase";
+  import { AuthError } from "@supabase/supabase-js";
+  import { session } from "../stores";
+  import Button from "../components/Button.svelte";
 
   let email = "";
   let password = "";
@@ -15,91 +17,70 @@
     password,
   };
 
-  function onSubmit(event: SubmitEvent) {
-    event.preventDefault();
-    //   console.log((event.target as HTMLFormElement).checkValidity());
+  let signInError: AuthError | null = null;
+  let isLoading = false;
+
+  async function onSubmit(event: SubmitEvent) {
+    const isFormValid = (event.target as HTMLFormElement).checkValidity();
+
+    if (!isFormValid) return;
+
+    isLoading = true;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
+
+    if (error) {
+      signInError = error;
+      isLoading = false;
+      return;
+    }
+
+    session.set(data.session);
+    isLoading = false;
+    navigate("/links");
   }
 </script>
 
-<div class="wrapper">
-  <div class="logo-wrapper">
-    <svelte:component this={LargeLogoIcon} />
-  </div>
-  <form novalidate on:submit={onSubmit}>
-    <div class="form-header">
-      <h1 class="heading-m">Login</h1>
-      <span class="body-m">Add your details below to get back into the app</span
-      >
-    </div>
+<AuthFormLayout on:submit={onSubmit}>
+  <svelte:fragment slot="heading">Login</svelte:fragment>
+  <svelte:fragment slot="description"
+    >Add your details below to get back into the app</svelte:fragment
+  >
 
-    <div class="form-body">
-      <Input
-        label="Email address"
-        id="email"
-        bind:value={email}
-        icon={EmailIcon}
-        type="email"
-        placeholder="e.g. alex@email.com"
-        required
-      />
+  <svelte:fragment slot="body">
+    <Input
+      label="Email address"
+      id="email"
+      bind:value={email}
+      icon={EmailIcon}
+      type="email"
+      placeholder="e.g. alex@email.com"
+      required
+      disabled={isLoading}
+    />
 
-      <Input
-        id="password"
-        label="Password"
-        bind:value={password}
-        icon={PasswordIcon}
-        type="password"
-        placeholder="Enter your password"
-        minlength="8"
-        required
-      />
+    <Input
+      id="password"
+      label="Password"
+      bind:value={password}
+      icon={PasswordIcon}
+      type="password"
+      placeholder="Enter your password"
+      minlength="8"
+      required
+      disabled={isLoading}
+    />
 
-      <Button type="submit" label="Login" />
-    </div>
+    <Button type="submit" label="Login" isDisabled={isLoading} />
+  </svelte:fragment>
 
-    <div class="form-footer">
-      <span>Don't have an account?</span>
-      <Link to="/signup">Create account</Link>
-    </div>
-  </form>
-</div>
+  <span slot="error">{signInError ? signInError.message : ""}</span>
 
-<style>
-  .wrapper {
-    width: 100%;
-    max-width: 470px;
-  }
-
-  .form-header {
-    margin-bottom: 40px;
-
-    & span {
-      color: var(--grey);
-    }
-  }
-
-  .form-body {
-    display: flex;
-    flex-direction: column;
-    row-gap: 24px;
-  }
-
-  .logo-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 50px;
-  }
-
-  .form-footer {
-    margin-top: 24px;
-    text-align: center;
-
-    & span {
-      color: var(--grey);
-    }
-  }
-
-  form {
-    padding: 40px;
-  }
-</style>
+  <svelte:fragment slot="footer">
+    <span>Don't have an account?</span>
+    <Link to="/signup">Create account</Link>
+  </svelte:fragment>
+</AuthFormLayout>
