@@ -4,10 +4,10 @@
   import PasswordIcon from "../assets/images/icon-password.svelte";
   import { Link, navigate } from "svelte-routing";
   import AuthFormLayout from "../layouts/AuthFormLayout.svelte";
-  import { supabase } from "../lib/supabase";
   import { AuthError } from "@supabase/supabase-js";
   import { session } from "../stores";
   import Button from "../components/Button.svelte";
+  import { supabase } from "../lib/supabase";
 
   let email = "";
   let password = "";

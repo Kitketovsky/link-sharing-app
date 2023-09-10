@@ -13,8 +13,6 @@
 
   {#if $profile.email}
     <span class="email">{$profile.email || ""}</span>
-  {:else}
-    <div class="skeleton skeleton-email"></div>
   {/if}
 </div>
 
@@ -36,13 +34,6 @@
   .skeleton-fullname {
     height: 1.2rem;
     width: 60%;
-    margin: 0 auto;
-    border-radius: 8px;
-  }
-
-  .skeleton-email {
-    height: 0.6rem;
-    width: 45%;
     margin: 0 auto;
     border-radius: 8px;
   }

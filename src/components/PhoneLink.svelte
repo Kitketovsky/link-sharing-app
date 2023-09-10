@@ -37,13 +37,13 @@
       openLink();
     }
   }}
-  style="background-color: {link.color}; color: {link.id === 'frontend-mentor'
+  style="background-color: {link.color}; color: {link.id === 'frontendmentor'
     ? 'black'
-    : 'white'}; box-shadow: 0px 2px 5px {link.id === 'frontend-mentor'
+    : 'white'}; box-shadow: 0px 2px 5px {link.id === 'frontendmentor'
     ? 'var(--purple)'
     : link.color}"
-  data-fill={link.id !== "frontend-mentor" && link.id !== "dev-to"}
-  data-arrow={link.id === "frontend-mentor"}
+  data-fill={link.id !== "frontendmentor" && link.id !== "devto"}
+  data-arrow={link.id === "frontendmentor"}
 >
   <div class="phone-link-info">
     <svelte:component this={link.icon} />

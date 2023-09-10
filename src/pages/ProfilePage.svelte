@@ -19,13 +19,19 @@
   </div>
 
   <div class="input-wrapper">
-    <label for="avatar">First name</label>
-    <Input placeholder="e.g. John" bind:value={$profile.name} required />
+    <label for="name">First name</label>
+    <Input
+      id="name"
+      placeholder="e.g. John"
+      bind:value={$profile.name}
+      required
+    />
   </div>
 
   <div class="input-wrapper">
-    <label for="avatar">Last name</label>
+    <label for="surname">Last name</label>
     <Input
+      id="surname"
       placeholder="e.g. Appleseed"
       bind:value={$profile.surname}
       required
@@ -33,11 +39,13 @@
   </div>
 
   <div class="input-wrapper">
-    <label for="avatar">Email</label>
+    <label for="email">Email</label>
     <Input
+      id="email"
       placeholder="e.g. email@example.com"
       bind:value={$profile.email}
       type="email"
+      disabled={!$profile.name || !$profile.surname}
     />
   </div>
 </FormLayout>

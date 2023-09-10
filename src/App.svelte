@@ -40,6 +40,22 @@
   });
 
   $: isProtectedPage = ["/links", "/profile", "/preview"].includes($pathname);
+
+  // $: {
+  // triggers on browser focus
+  //   if ($session) {
+  //     // load initial data
+  //     supabase
+  //       .from("users")
+  //       .select()
+  //       .then(({ data, error }) => {
+  //         if (error) return;
+
+  //         console.log("Initial data loaded");
+  //         console.log(data);
+  //       });
+  //   }
+  // }
 </script>
 
 <Router>

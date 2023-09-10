@@ -1,6 +1,5 @@
 <script lang="ts">
   import Input from "../components/Input.svelte";
-  import LargeLogoIcon from "../assets/images/logo-devlinks-large.svelte";
   import EmailIcon from "../assets/images/icon-email.svelte";
   import PasswordIcon from "../assets/images/icon-password.svelte";
   import { Link } from "svelte-routing";

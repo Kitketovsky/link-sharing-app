@@ -2,6 +2,7 @@
   import Button from "../components/Button.svelte";
 
   export let ref: HTMLFormElement;
+  export let isDisabled = false;
 </script>
 
 <!-- pass bind:this to parent -->
@@ -16,7 +17,7 @@
   </div>
 
   <div class="footer">
-    <Button label="Save" type="submit" isDisabled on:click />
+    <Button label="Save" type="submit" {isDisabled} />
   </div>
 </form>
 

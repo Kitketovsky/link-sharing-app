@@ -20,7 +20,7 @@ const options = [
     color: "#1a1a1a",
   },
   {
-    id: "frontend-mentor",
+    id: "frontendmentor",
     name: "Frontend Mentor",
     icon: FrontendMentorIcon,
     color: "#ffffff",
@@ -56,7 +56,7 @@ const options = [
     color: "#EE3FC8",
   },
   {
-    id: "dev-to",
+    id: "devto",
     name: "dev.to",
     icon: DevToIcon,
     color: "#333333",
@@ -68,7 +68,7 @@ const options = [
     color: "#8A1A50",
   },
   {
-    id: "free-code-camp",
+    id: "freecodecamp",
     name: "freeCodeCamp",
     icon: FreeCodeCampIcon,
     color: "#302267",
@@ -86,7 +86,7 @@ const options = [
     color: "#0330D1",
   },
   {
-    id: "stack-overflow",
+    id: "stackoverflow",
     name: "Stack Overflow",
     icon: StackOverflowIcon,
     color: "#EC7100",
