@@ -107,3 +107,8 @@ body,
 .text-dark-grey {
   color: var(--dark-grey);
 }
+
+.skeleton {
+  background-color: var(--grey);
+  opacity: 15%;
+}

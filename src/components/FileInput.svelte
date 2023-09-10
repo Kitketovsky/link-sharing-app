@@ -8,7 +8,7 @@
   let errorMessage: string | null = null;
 
   onMount(() => {
-    if ($profile.avatar) {
+    if ($profile.avatar && $profile.avatar instanceof File) {
       const reader = new FileReader();
 
       reader.readAsDataURL($profile.avatar);

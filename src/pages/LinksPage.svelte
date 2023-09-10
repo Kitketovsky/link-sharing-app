@@ -16,6 +16,7 @@
       formRef.reportValidity();
     } else {
       profile.addNewLink();
+      // TODO: scroll to last link and focus on input
     }
   }
 </script>
@@ -49,6 +50,11 @@
         onSelectChange={(optionId) => profile.changeLink(link.id, optionId)}
         on:input={(event) => {
           profile.changeLink(link.id, link.platform, event);
+        }}
+        on:keydown={(event) => {
+          if (event.key === "Enter") {
+            onAddNewLinkClick();
+          }
         }}
       />
     {/each}

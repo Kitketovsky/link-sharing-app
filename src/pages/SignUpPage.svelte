@@ -2,9 +2,9 @@
   import Button from "../lib/Button.svelte";
   import Input from "../lib/Input.svelte";
 
-  import LargeLogoIcon from "./../assets/images/logo-devlinks-large.svelte";
-  import EmailIcon from "./../assets/images/icon-email.svelte";
-  import PasswordIcon from "./../assets/images/icon-password.svelte";
+  import LargeLogoIcon from "../assets/images/logo-devlinks-large.svelte";
+  import EmailIcon from "../assets/images/icon-email.svelte";
+  import PasswordIcon from "../assets/images/icon-password.svelte";
   import { Link } from "svelte-routing";
 
   let email = "";

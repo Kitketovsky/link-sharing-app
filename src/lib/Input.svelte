@@ -91,6 +91,7 @@
       formnovalidate={true}
       on:input={handleInput}
       on:input
+      on:keydown
       on:invalid={onInputInvalid}
       {...$$restProps}
     />

@@ -12,17 +12,15 @@
   $: isPreviewPage = $pathname === "/preview";
 </script>
 
-{#if isPreviewPage}
-  <nav>
+<nav data-preview={isPreviewPage}>
+  {#if isPreviewPage}
     <Button
       label="Back to Editor"
       mode="secondary"
       on:click={() => navigate("/links")}
     />
     <Button label="Share Link" />
-  </nav>
-{:else}
-  <nav>
+  {:else}
     <div>
       <svelte:component this={LargeLogoIcon} />
     </div>
@@ -42,8 +40,8 @@
       mode="secondary"
       on:click={() => navigate("/preview")}
     />
-  </nav>
-{/if}
+  {/if}
+</nav>
 
 <style>
   nav {
@@ -58,6 +56,11 @@
     z-index: 999;
     box-shadow: 0px 5px 32px
       color-mix(in srgb, var(--purple-hover), transparent 35%);
+  }
+
+  nav[data-preview="true"] {
+    margin: 1.5rem;
+    border-radius: 12px;
   }
 
   .tabs {

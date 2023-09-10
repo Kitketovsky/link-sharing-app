@@ -3,13 +3,13 @@
 
   import { Router, Route } from "svelte-routing";
   import { onMount } from "svelte";
-  import Main from "./pages/Main.svelte";
-  import Preview from "./pages/Preview.svelte";
-  import Profile from "./pages/Profile.svelte";
+  import Main from "./pages/MainPage.svelte";
+  import Preview from "./pages/PreviewPage.svelte";
+  import Profile from "./pages/ProfilePage.svelte";
   import Navigation from "./lib/Navigation.svelte";
-  import Login from "./pages/Login.svelte";
-  import SignUp from "./pages/SignUp.svelte";
-  import Links from "./pages/Links.svelte";
+  import Login from "./pages/LoginPage.svelte";
+  import SignUp from "./pages/SignUpPage.svelte";
+  import Links from "./pages/LinksPage.svelte";
   import { pathname } from "./stores";
   import ContentLayout from "./layouts/ContentLayout.svelte";
   import Phone from "./lib/Phone.svelte";
@@ -24,6 +24,9 @@
     };
   });
 
+  $: {
+    document.body.dataset.path = $pathname;
+  }
   $: isAuthPages = $pathname === "/login" || $pathname === "/signup";
 </script>
 
@@ -37,15 +40,14 @@
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
 
-      {#if $pathname === "/links" || $pathname === "/profile"}
-        <ContentLayout>
+      <ContentLayout>
+        {#if $pathname === "/links" || $pathname === "/profile"}
           <Phone />
-          <Route path="/links" component={Links} />
-          <Route path="/profile" component={Profile} />
-        </ContentLayout>
-      {/if}
-
-      <Route path="/preview" component={Preview} />
+        {/if}
+        <Route path="/links" component={Links} />
+        <Route path="/profile" component={Profile} />
+        <Route path="/preview" component={Preview} />
+      </ContentLayout>
     </main>
   </div>
 </Router>

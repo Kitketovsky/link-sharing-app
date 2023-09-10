@@ -2,11 +2,41 @@
   import type { IOptions } from "../conts/options";
   import ArrowRightIcon from "./../assets/images/icon-arrow-right.svelte";
 
-  export let link: IOptions[number];
+  export let link: {
+    id: string;
+    url: string;
+    color: string;
+    icon: IOptions[number]["icon"];
+    name: string;
+  };
+
+  function openLink() {
+    try {
+      new URL(link.url);
+    } catch (error) {
+      // TODO: show some popup with the error that it is invalid URL
+      return;
+    }
+
+    const anchor = document.createElement("a");
+
+    anchor.href = link.url;
+    anchor.target = "_blank";
+    anchor.click();
+    anchor.remove();
+  }
 </script>
 
 <div
   class="phone-link body-s"
+  on:click={openLink}
+  tabindex="0"
+  role="link"
+  on:keydown={(event) => {
+    if (event.key === "Enter") {
+      openLink();
+    }
+  }}
   style="background-color: {link.color}; color: {link.id === 'frontend-mentor'
     ? 'black'
     : 'white'}; box-shadow: 0px 2px 5px {link.id === 'frontend-mentor'
@@ -34,6 +64,7 @@
     border-radius: 8px;
     padding: 0.75rem 1rem;
     color: var(--white);
+    cursor: pointer;
 
     & + & {
       margin-top: 1rem;

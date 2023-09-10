@@ -6,7 +6,7 @@ function createProfileStore() {
   const { subscribe, update, set } = writable<{
     name: string;
     surname: string;
-    avatar: File | null;
+    avatar: File | string | null;
     email: string | null;
     links: {
       platform: string;
