@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "../lib/Button.svelte";
+  import Button from "../components/Button.svelte";
 
   export let ref: HTMLFormElement;
 </script>

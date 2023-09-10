@@ -1,6 +1,6 @@
 <script lang="ts">
   import options from "../conts/options";
-  import PhoneLink from "../lib/PhoneLink.svelte";
+  import PhoneLink from "./PhoneLink.svelte";
   import { profile } from "../stores";
 
   $: phoneLinks = $profile.links.slice().map(({ platform, url }) => {

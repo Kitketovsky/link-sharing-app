@@ -1,12 +1,12 @@
 <script lang="ts">
   import IllustrationEmpty from "./../assets/images/illustration-empty.svg";
-  import Button from "../lib/Button.svelte";
-  import DevLink from "../lib/DevLink.svelte";
+  import DevLink from "./../components/DevLink.svelte";
   import options from "../conts/options";
 
   import { profile } from "../stores";
   import FormLayout from "../layouts/FormLayout.svelte";
   import { tick } from "svelte";
+  import Button from "../components/Button.svelte";
 
   let formRef: HTMLFormElement;
 

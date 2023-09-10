@@ -1,7 +1,7 @@
 <script lang="ts">
   import FileInput from "../components/FileInput.svelte";
   import FormLayout from "../layouts/FormLayout.svelte";
-  import Input from "../lib/Input.svelte";
+  import Input from "../components/Input.svelte";
   import { profile } from "../stores";
 
   let formRef: HTMLFormElement;

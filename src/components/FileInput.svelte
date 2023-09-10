@@ -4,7 +4,7 @@
   import UploadIcon from "./../assets/images/icon-upload-image.svelte";
 
   let previewDataURI: string | null = null;
-  export let file: File | null = null;
+  export let file: File | string | null = null;
   let errorMessage: string | null = null;
 
   onMount(() => {
