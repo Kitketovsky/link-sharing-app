@@ -26,6 +26,7 @@
     "@supabase/supabase-js": "^2.33.1",
     "clsx": "^2.0.0",
     "svelte-routing": "^2.2.0",
+    "type-fest": "^4.3.1",
     "uuid": "^9.0.0"
   }
 }
