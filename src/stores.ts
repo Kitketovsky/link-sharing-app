@@ -87,5 +87,5 @@ export const remote = writable<{
   surname: string | null;
   avatar: string | null;
   email: string | null;
-  links: ILink[];
+  links: ILink[] | null;
 } | null>(null);

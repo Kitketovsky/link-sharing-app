@@ -1,7 +1,15 @@
-<script>
+<script lang="ts">
   import { profile } from "../stores";
 
-  $: fullname = `${$profile.name} ${$profile.surname}`.trim();
+  export let name: string = "";
+  export let surname: string = "";
+
+  $: {
+    name = name || $profile.name;
+    surname = surname || $profile.name;
+  }
+
+  $: fullname = `${name} ${surname}`.trim();
 </script>
 
 <div class="info">

@@ -2,14 +2,13 @@
   import IllustrationEmpty from "./../assets/images/illustration-empty.svg";
   import DevLink from "./../components/DevLink.svelte";
   import options from "../conts/options";
-
   import { profile, session } from "../stores";
   import FormLayout from "../layouts/FormLayout.svelte";
   import { tick } from "svelte";
   import Button from "../components/Button.svelte";
-  import { supabase } from "../lib/supabase";
-  import type { TablesInsert } from "../types/db/utils";
+  import { supabase } from "../lib/db/supabase";
   import type { PostgrestError } from "@supabase/supabase-js";
+  import ContentLayout from "../layouts/ContentLayout.svelte";
 
   let formRef: HTMLFormElement;
 
@@ -67,61 +66,63 @@
   }
 </script>
 
-<FormLayout bind:ref={formRef} on:click={onSubmit} isDisabled={isUpdating}>
-  <h1 slot="heading">Customize your links</h1>
-  <span slot="description"
-    >Add/edit/remove links below and then share all your profiles with the
-    world!</span
-  >
+<ContentLayout>
+  <FormLayout bind:ref={formRef} on:click={onSubmit} isDisabled={isUpdating}>
+    <h1 slot="heading">Customize your links</h1>
+    <span slot="description"
+      >Add/edit/remove links below and then share all your profiles with the
+      world!</span
+    >
 
-  <Button
-    label="+ Add New Link"
-    mode="secondary"
-    isFullWidth
-    on:click={onAddNewLinkClick}
-    isDisabled={$profile.links.length === options.length}
-  />
+    <Button
+      label="+ Add New Link"
+      mode="secondary"
+      isFullWidth
+      on:click={onAddNewLinkClick}
+      isDisabled={$profile.links.length === options.length}
+    />
 
-  {#if $profile.links.length}
-    {#each $profile.links as link, i (link.id)}
-      <DevLink
-        options={[...options].filter(
-          (option) =>
-            !$profile.links.find((link) => link.platform === option.id) ||
-            option.id === link.platform,
-        )}
-        onRemoveLink={() => profile.removeLink(link.id)}
-        number={i + 1}
-        {link}
-        onSelectChange={(optionId) => profile.changeLink(link.id, optionId)}
-        on:input={(event) => {
-          profile.changeLink(link.id, link.platform, event);
-        }}
-        on:keydown={(event) => {
-          if (event.key === "Enter") {
-            onAddNewLinkClick();
-          }
-        }}
-      />
-    {/each}
-  {:else}
-    <div class="no-links-placeholder">
-      <div>
+    {#if $profile.links.length}
+      {#each $profile.links as link, i (link.id)}
+        <DevLink
+          options={[...options].filter(
+            (option) =>
+              !$profile.links.find((link) => link.platform === option.id) ||
+              option.id === link.platform,
+          )}
+          onRemoveLink={() => profile.removeLink(link.id)}
+          number={i + 1}
+          {link}
+          onSelectChange={(optionId) => profile.changeLink(link.id, optionId)}
+          on:input={(event) => {
+            profile.changeLink(link.id, link.platform, event);
+          }}
+          on:keydown={(event) => {
+            if (event.key === "Enter") {
+              onAddNewLinkClick();
+            }
+          }}
+        />
+      {/each}
+    {:else}
+      <div class="no-links-placeholder">
         <div>
-          <img src={IllustrationEmpty} alt="Illustration Empty" />
+          <div>
+            <img src={IllustrationEmpty} alt="Illustration Empty" />
+          </div>
+
+          <h2 class="heading-m">Let's get you started</h2>
+
+          <p class="body-m">
+            Use the “Add new link” button to get started. Once you have more
+            than one link, you can reorder and edit them. We’re here to help you
+            share your profiles with everyone!
+          </p>
         </div>
-
-        <h2 class="heading-m">Let's get you started</h2>
-
-        <p class="body-m">
-          Use the “Add new link” button to get started. Once you have more than
-          one link, you can reorder and edit them. We’re here to help you share
-          your profiles with everyone!
-        </p>
       </div>
-    </div>
-  {/if}
-</FormLayout>
+    {/if}
+  </FormLayout>
+</ContentLayout>
 
 <style>
   .no-links-placeholder {

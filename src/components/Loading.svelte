@@ -1,7 +1,10 @@
-<div><span> Loading... </span></div>
+<div><span>Loading...</span></div>
 
 <style>
   div {
+    position: absolute;
+    inset: 0;
+    background-color: var(--white);
     flex-grow: 1;
     display: flex;
     align-items: center;

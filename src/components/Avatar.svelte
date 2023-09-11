@@ -3,21 +3,29 @@
 
   let previewDataURI: string | null = null;
 
+  export let avatar: File | string | null = null;
+
   $: {
-    if ($profile.avatar instanceof File) {
+    if (!avatar) {
+      avatar = $profile.avatar;
+    }
+  }
+
+  $: {
+    if (avatar instanceof File) {
       const reader = new FileReader();
 
-      reader.readAsDataURL($profile.avatar);
+      reader.readAsDataURL(avatar);
 
       reader.onload = function (e) {
         previewDataURI = e.target?.result as string;
       };
     }
 
-    if (typeof $profile.avatar === "string") {
+    if (typeof avatar === "string") {
       try {
-        new URL($profile.avatar);
-        previewDataURI = $profile.avatar;
+        new URL(avatar);
+        previewDataURI = avatar;
       } catch (error) {
         console.log(error);
       }

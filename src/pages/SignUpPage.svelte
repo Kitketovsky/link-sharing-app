@@ -4,7 +4,7 @@
   import PasswordIcon from "../assets/images/icon-password.svelte";
   import { Link } from "svelte-routing";
   import Button from "../components/Button.svelte";
-  import { supabase } from "../lib/supabase";
+  import { supabase } from "../lib/db/supabase";
 
   import type { AuthError } from "@supabase/supabase-js";
   import { session } from "../stores";

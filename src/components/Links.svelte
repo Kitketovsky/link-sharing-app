@@ -2,13 +2,23 @@
   import options from "../conts/options";
   import PhoneLink from "./PhoneLink.svelte";
   import { profile } from "../stores";
+  import type { ILink } from "../types/ILink";
 
-  $: phoneLinks = $profile.links.slice().map(({ platform, url }) => {
-    const { color, icon, name } = options.find(
-      (option) => option.id === platform,
-    )!;
-    return { id: platform, url, color, icon, name };
-  });
+  export let links: ILink[] | null = null;
+
+  $: {
+    links = links?.length ? links : $profile.links;
+  }
+
+  $: phoneLinks = links
+    ? links.slice().map(({ platform, url }) => {
+        const { color, icon, name } = options.find(
+          (option) => option.id === platform,
+        )!;
+
+        return { id: platform, url, color, icon, name };
+      })
+    : [];
 </script>
 
 <div class="wrapper">

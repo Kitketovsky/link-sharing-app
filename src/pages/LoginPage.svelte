@@ -7,7 +7,7 @@
   import { AuthError } from "@supabase/supabase-js";
   import { session } from "../stores";
   import Button from "../components/Button.svelte";
-  import { supabase } from "../lib/supabase";
+  import { supabase } from "../lib/db/supabase";
 
   let email = "";
   let password = "";

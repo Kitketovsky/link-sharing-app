@@ -2,15 +2,18 @@
   import Avatar from "../components/Avatar.svelte";
   import Links from "../components/Links.svelte";
   import PersonInfo from "../components/PersonInfo.svelte";
+  import PreviewLayout from "../layouts/PreviewLayout.svelte";
 </script>
 
-<div class="wrapper">
-  <div class="card">
-    <Avatar />
-    <PersonInfo />
-    <Links />
+<PreviewLayout>
+  <div class="wrapper">
+    <div class="card">
+      <Avatar />
+      <PersonInfo />
+      <Links />
+    </div>
   </div>
-</div>
+</PreviewLayout>
 
 <style>
   .wrapper {
