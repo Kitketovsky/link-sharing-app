@@ -37,27 +37,27 @@ export interface Database {
       users: {
         Row: {
           created_at: string
-          email: string | null
+          email: string
           id: string
           links: Json | null
-          name: string | null
-          surname: string | null
+          name: string
+          surname: string
         }
         Insert: {
           created_at?: string
-          email?: string | null
+          email?: string
           id?: string
           links?: Json | null
-          name?: string | null
-          surname?: string | null
+          name?: string
+          surname?: string
         }
         Update: {
           created_at?: string
-          email?: string | null
+          email?: string
           id?: string
           links?: Json | null
-          name?: string | null
-          surname?: string | null
+          name?: string
+          surname?: string
         }
         Relationships: []
       }

@@ -9,19 +9,19 @@ export type ExtendedDatabase = MergeDeep<
       Tables: {
         users: {
           Row: Omit<Database["public"]["Tables"]["users"]["Row"], "links"> & {
-            links: ILink[];
+            links?: ILink[] | null;
           };
           Insert: Omit<
             Database["public"]["Tables"]["users"]["Insert"],
             "links"
           > & {
-            links: ILink[];
+            links?: ILink[] | null;
           };
           Update: Omit<
             Database["public"]["Tables"]["users"]["Update"],
             "links"
           > & {
-            links: ILink[];
+            links?: ILink[] | null;
           };
         };
       };
