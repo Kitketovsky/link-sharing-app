@@ -2,12 +2,51 @@
   import FileInput from "../components/FileInput.svelte";
   import FormLayout from "../layouts/FormLayout.svelte";
   import Input from "../components/Input.svelte";
-  import { profile } from "../stores";
+  import { profile, session } from "../stores";
+  import { supabase } from "../lib/supabase";
+  import type { PostgrestError } from "@supabase/supabase-js";
 
   let formRef: HTMLFormElement;
+
+  let isUpdating = false;
+  let supabaseError: PostgrestError | null = null;
+
+  async function onSubmit() {
+    isUpdating = true;
+
+    try {
+      if (!$session) return;
+      const { name, surname, email, avatar } = $profile;
+
+      if (avatar && avatar instanceof File) {
+        const fileExt = avatar.name.split(".").at(-1) === "png" ? "png" : "jpg";
+
+        const { error } = await supabase.storage
+          .from("images")
+          .upload($session.user.id, avatar, {
+            contentType: `image/${fileExt}`,
+          });
+
+        if (error) {
+          console.log("file", error);
+        }
+      }
+
+      const { error } = await supabase
+        .from("users")
+        .update({ name, surname, email })
+        .eq("id", $session.user.id);
+
+      if (error) {
+        supabaseError = error;
+      }
+    } finally {
+      isUpdating = false;
+    }
+  }
 </script>
 
-<FormLayout bind:ref={formRef}>
+<FormLayout bind:ref={formRef} on:click={onSubmit} isDisabled={isUpdating}>
   <h1 slot="heading">Preview Profile</h1>
   <span slot="description">
     Add your details to create a personal touch to your profile.

@@ -19,6 +19,12 @@
     }
   });
 
+  $: {
+    if ($profile.avatar && typeof $profile.avatar === "string") {
+      previewDataURI = $profile.avatar;
+    }
+  }
+
   function onFileChange(event: Event) {
     const fileInput = event.target as HTMLInputElement;
 

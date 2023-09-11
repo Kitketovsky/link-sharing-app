@@ -17,7 +17,7 @@
   </div>
 
   <div class="footer">
-    <Button label="Save" type="submit" {isDisabled} />
+    <Button label="Save" type="button" {isDisabled} on:click />
   </div>
 </form>
 

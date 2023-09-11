@@ -8,12 +8,13 @@
   import Login from "./pages/LoginPage.svelte";
   import SignUp from "./pages/SignUpPage.svelte";
   import Links from "./pages/LinksPage.svelte";
-  import { pathname, session } from "./stores";
+  import { pathname, profile, session } from "./stores";
   import ContentLayout from "./layouts/ContentLayout.svelte";
   import Navigation from "./components/Navigation.svelte";
   import Phone from "./components/Phone.svelte";
 
   import { supabase } from "./lib/supabase";
+  import { v4 } from "uuid";
 
   onMount(() => {
     const unsub = globalHistory.listen(({ location }) => {
@@ -30,8 +31,56 @@
   }
 
   onMount(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      session.set(data.session);
+    supabase.auth.getSession().then(({ data: sessionData }) => {
+      session.set(sessionData.session);
+
+      if (!sessionData.session) return;
+
+      let avatarUrl: string | null = null;
+
+      supabase.storage
+        .from("images")
+        .list(undefined, { search: `${sessionData.session.user.id}` })
+        .then(({ data: files }) => {
+          if (files?.length) {
+            const { data } = supabase.storage
+              .from("images")
+              .getPublicUrl(`${files[0].name}`);
+
+            avatarUrl = data.publicUrl;
+
+            supabase
+              .from("users")
+              .select()
+              .eq("id", sessionData.session.user.id)
+              .single()
+              .then(({ data, error }) => {
+                if (!data) return;
+
+                const { name, surname, email, created_at, id, ...links } = data;
+
+                const formattedLinks: {
+                  id: string;
+                  platform: string;
+                  url: string;
+                }[] = [];
+
+                Object.entries(links).forEach(([platform, url]) => {
+                  if (url) {
+                    formattedLinks.push({ id: v4(), platform, url });
+                  }
+                });
+
+                profile.set({
+                  name: data.name || "",
+                  surname: data.surname || "",
+                  avatar: avatarUrl,
+                  email: data.email,
+                  links: formattedLinks,
+                });
+              });
+          }
+        });
     });
 
     supabase.auth.onAuthStateChange((_event, _session) => {
@@ -40,22 +89,6 @@
   });
 
   $: isProtectedPage = ["/links", "/profile", "/preview"].includes($pathname);
-
-  // $: {
-  // triggers on browser focus
-  //   if ($session) {
-  //     // load initial data
-  //     supabase
-  //       .from("users")
-  //       .select()
-  //       .then(({ data, error }) => {
-  //         if (error) return;
-
-  //         console.log("Initial data loaded");
-  //         console.log(data);
-  //       });
-  //   }
-  // }
 </script>
 
 <Router>

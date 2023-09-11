@@ -3,10 +3,12 @@
   import DevLink from "./../components/DevLink.svelte";
   import options from "../conts/options";
 
-  import { profile } from "../stores";
+  import { profile, session } from "../stores";
   import FormLayout from "../layouts/FormLayout.svelte";
   import { tick } from "svelte";
   import Button from "../components/Button.svelte";
+  import { supabase } from "../lib/supabase";
+  import type { TablesInsert } from "../types/supabase";
 
   let formRef: HTMLFormElement;
 
@@ -30,9 +32,40 @@
       }
     }
   }
+
+  let isUpdating = false;
+
+  async function onSubmit() {
+    try {
+      isUpdating = true;
+
+      const { links } = $profile;
+
+      const formattedLinks = links.reduce((acc, link) => {
+        acc[link.platform as keyof TablesInsert<"users">] = link.url;
+        return acc;
+      }, {} as TablesInsert<"users">);
+
+      const userId = $session?.user.id;
+
+      if (!userId) return;
+
+      const { data, error } = await supabase
+        .from("users")
+        .update(formattedLinks)
+        .eq("id", userId)
+        .select();
+
+      if (error) {
+        console.log(error);
+      }
+    } finally {
+      isUpdating = false;
+    }
+  }
 </script>
 
-<FormLayout bind:ref={formRef}>
+<FormLayout bind:ref={formRef} on:click={onSubmit} isDisabled={isUpdating}>
   <h1 slot="heading">Customize your links</h1>
   <span slot="description"
     >Add/edit/remove links below and then share all your profiles with the

@@ -40,7 +40,6 @@
     const { data, error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
-      options: { emailRedirectTo: "http://localhost:5137/links" },
     });
 
     if (error) {
@@ -51,6 +50,7 @@
 
     session.set(data.session);
     isLoading = false;
+    isSuccess = true;
   }
 </script>
 
