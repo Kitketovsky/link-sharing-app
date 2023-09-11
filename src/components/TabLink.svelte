@@ -7,8 +7,6 @@
 
   $: isActive = $pathname === to;
 
-  console.log(isActive);
-
   function onTabLinkClick() {
     navigate(to);
   }

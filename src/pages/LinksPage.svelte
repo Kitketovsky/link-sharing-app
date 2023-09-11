@@ -8,7 +8,8 @@
   import { tick } from "svelte";
   import Button from "../components/Button.svelte";
   import { supabase } from "../lib/supabase";
-  import type { TablesInsert } from "../types/supabase";
+  import type { TablesInsert } from "../types/db/utils";
+  import type { PostgrestError } from "@supabase/supabase-js";
 
   let formRef: HTMLFormElement;
 
@@ -33,34 +34,35 @@
     }
   }
 
+  const status: { updating: boolean; error: PostgrestError | null } = {
+    updating: false,
+    error: null,
+  };
+
   let isUpdating = false;
 
   async function onSubmit() {
     try {
-      isUpdating = true;
+      status.updating = true;
 
       const { links } = $profile;
-
-      const formattedLinks = links.reduce((acc, link) => {
-        acc[link.platform as keyof TablesInsert<"users">] = link.url;
-        return acc;
-      }, {} as TablesInsert<"users">);
 
       const userId = $session?.user.id;
 
       if (!userId) return;
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("users")
-        .update(formattedLinks)
+        .update({ links: links })
         .eq("id", userId)
         .select();
 
       if (error) {
+        status.error = error;
         console.log(error);
       }
     } finally {
-      isUpdating = false;
+      status.updating = false;
     }
   }
 </script>

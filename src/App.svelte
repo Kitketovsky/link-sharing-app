@@ -8,13 +8,15 @@
   import Login from "./pages/LoginPage.svelte";
   import SignUp from "./pages/SignUpPage.svelte";
   import Links from "./pages/LinksPage.svelte";
-  import { pathname, profile, session } from "./stores";
+  import { isLoading, pathname, profile, remote, session } from "./stores";
   import ContentLayout from "./layouts/ContentLayout.svelte";
   import Navigation from "./components/Navigation.svelte";
   import Phone from "./components/Phone.svelte";
 
   import { supabase } from "./lib/supabase";
-  import { v4 } from "uuid";
+  import Loading from "./components/Loading.svelte";
+
+  import type { TablesRow } from "./types/db/utils";
 
   onMount(() => {
     const unsub = globalHistory.listen(({ location }) => {
@@ -30,58 +32,75 @@
     document.body.dataset.path = $pathname;
   }
 
-  onMount(() => {
-    supabase.auth.getSession().then(({ data: sessionData }) => {
+  // onMount(() => {
+  //   let channel = supabase.channel("main");
+
+  //   channel
+  //     .on<TablesRow<"users">>(
+  //       "postgres_changes",
+  //       {
+  //         event: "UPDATE",
+  //         schema: "public",
+  //         table: "users",
+  //       },
+  //       (payload) => {
+  //       },
+  //     )
+  //     .subscribe();
+
+  //   return () => {
+  //     if (channel) {
+  //       supabase.removeChannel(channel);
+  //     }
+  //   };
+  // });
+
+  async function loadRemoteData() {
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+
       session.set(sessionData.session);
 
       if (!sessionData.session) return;
 
       let avatarUrl: string | null = null;
 
-      supabase.storage
+      const { data: files } = await supabase.storage
         .from("images")
-        .list(undefined, { search: `${sessionData.session.user.id}` })
-        .then(({ data: files }) => {
-          if (files?.length) {
-            const { data } = supabase.storage
-              .from("images")
-              .getPublicUrl(`${files[0].name}`);
+        .list(undefined, { search: `${sessionData.session.user.id}` });
 
-            avatarUrl = data.publicUrl;
+      if (!files?.length) return;
 
-            supabase
-              .from("users")
-              .select()
-              .eq("id", sessionData.session.user.id)
-              .single()
-              .then(({ data, error }) => {
-                if (!data) return;
+      const { data } = supabase.storage
+        .from("images")
+        .getPublicUrl(`${files[0].name}`);
 
-                const { name, surname, email, created_at, id, ...links } = data;
+      avatarUrl = data.publicUrl;
 
-                const formattedLinks: {
-                  id: string;
-                  platform: string;
-                  url: string;
-                }[] = [];
+      const { data: profileData } = await supabase
+        .from("users")
+        .select()
+        .eq("id", sessionData.session.user.id)
+        .single();
 
-                Object.entries(links).forEach(([platform, url]) => {
-                  if (url) {
-                    formattedLinks.push({ id: v4(), platform, url });
-                  }
-                });
+      if (!data) return;
 
-                profile.set({
-                  name: data.name || "",
-                  surname: data.surname || "",
-                  avatar: avatarUrl,
-                  email: data.email,
-                  links: formattedLinks,
-                });
-              });
-          }
-        });
-    });
+      const { name, surname, email, links } = profileData;
+
+      profile.set({
+        name,
+        surname,
+        avatar: avatarUrl,
+        email,
+        links: links,
+      });
+    } finally {
+      isLoading.set(false);
+    }
+  }
+
+  onMount(() => {
+    loadRemoteData();
 
     supabase.auth.onAuthStateChange((_event, _session) => {
       session.set(_session);
@@ -92,9 +111,11 @@
 </script>
 
 <Router>
-  <div class="layout" data-login={!isProtectedPage}>
+  <div class="layout">
     <main>
-      {#if isProtectedPage}
+      {#if $isLoading}
+        <Loading />
+      {:else if isProtectedPage}
         <Navigation />
         <ContentLayout>
           {#if $pathname === "/links" || $pathname === "/profile"}

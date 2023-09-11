@@ -1,3 +1,4 @@
+import type { ILink } from "./types/ILink";
 import { writable } from "svelte/store";
 import options from "./conts/options";
 import { v4 as uuidv4 } from "uuid";
@@ -9,17 +10,13 @@ function createProfileStore() {
     name: string;
     surname: string;
     avatar: File | string | null;
-    email: string | null;
-    links: {
-      platform: string;
-      url: string;
-      id: string;
-    }[];
+    email: string;
+    links: ILink[];
   }>({
     name: "",
     surname: "",
     avatar: null,
-    email: null,
+    email: "",
     links: [],
   });
 
@@ -43,7 +40,12 @@ function createProfileStore() {
           ...prev,
           links: [
             ...prev.links,
-            { platform: firstOne.id, url: "", id: uuidv4() },
+            {
+              platform: firstOne.id,
+              url: "",
+              id: uuidv4(),
+              position: prev.links.length + 1,
+            },
           ],
         };
       }),
@@ -77,3 +79,13 @@ function createProfileStore() {
 export const pathname = writable(window.location.pathname);
 export const session = writable<AuthSession | null>(null);
 export const profile = createProfileStore();
+
+export const isLoading = writable(true);
+
+export const remote = writable<{
+  name: string | null;
+  surname: string | null;
+  avatar: string | null;
+  email: string | null;
+  links: ILink[];
+} | null>(null);
