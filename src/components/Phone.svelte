@@ -32,7 +32,7 @@
       min-height: 632px;
       max-height: 632px;
       height: 100%;
-      position: relative;
+      position: fixed;
       background: url("./../assets/images/illustration-phone-mockup.svg") center
         center no-repeat;
     }

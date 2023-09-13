@@ -67,7 +67,7 @@
     cursor: pointer;
 
     & + & {
-      margin-top: 1rem;
+      margin-top: 1.2rem;
     }
 
     &[data-fill="true"] path {
