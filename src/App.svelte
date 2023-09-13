@@ -64,6 +64,8 @@
     init();
 
     supabase.auth.onAuthStateChange((_event, _session) => {
+      console.log("Session: ", _session);
+
       if (_session) {
         init();
       }
