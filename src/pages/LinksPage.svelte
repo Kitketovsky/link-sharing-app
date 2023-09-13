@@ -66,6 +66,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Links</title>
+</svelte:head>
+
 <ContentLayout>
   <FormLayout bind:ref={formRef} on:click={onSubmit} isDisabled={isUpdating}>
     <h1 slot="heading">Customize your links</h1>

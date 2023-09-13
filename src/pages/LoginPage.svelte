@@ -44,6 +44,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Login</title>
+</svelte:head>
+
 <AuthFormLayout on:submit={onSubmit}>
   <svelte:fragment slot="heading">Login</svelte:fragment>
   <svelte:fragment slot="description"

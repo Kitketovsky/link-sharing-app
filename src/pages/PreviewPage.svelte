@@ -5,6 +5,10 @@
   import PreviewLayout from "../layouts/PreviewLayout.svelte";
 </script>
 
+<svelte:head>
+  <title>Preview</title>
+</svelte:head>
+
 <PreviewLayout>
   <div class="wrapper">
     <div class="card">

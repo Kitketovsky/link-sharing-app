@@ -108,7 +108,7 @@
     <Route path="/login" component={Login} />
     <Route path="/signup" component={SignUp} />
 
-    <Route path="/social/:id" let:params>
+    <Route path="/l/:id" let:params>
       <Social id={params.id} />
     </Route>
   </Router>

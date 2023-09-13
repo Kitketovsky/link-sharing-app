@@ -7,8 +7,10 @@
 
   import type { ILink } from "../types/ILink";
   import PreviewLayout from "../layouts/PreviewLayout.svelte";
-
+  import clsx from "clsx";
   export let id: string;
+
+  let isLoading = true;
 
   let profile: {
     links: ILink[];
@@ -20,22 +22,48 @@
 
   onMount(() => {
     if (id) {
-      loadInitialData(id).then((data) => {
-        profile = data;
-      });
+      loadInitialData(id)
+        .then((data) => {
+          profile = data;
+        })
+        .finally(() => {
+          isLoading = false;
+        });
     }
   });
 </script>
+
+<svelte:head>
+  {#if isLoading}
+    <title>Loading...</title>
+  {/if}
+
+  {#if !isLoading && !profile}
+    <title>No such link</title>
+  {/if}
+
+  {#if !isLoading && profile}
+    <title>{`${profile.name || ""} ${profile.surname || ""}`.trim()}</title>
+  {/if}
+</svelte:head>
 
 <!-- TODO: Show UI in case when there's no data for such user id -->
 
 <PreviewLayout>
   <div class="wrapper">
-    <div class="card">
-      {#if profile}
+    <div class={clsx({ card: true, loading: isLoading })}>
+      {#if isLoading}
+        <span>Loading...</span>
+      {/if}
+
+      {#if !isLoading && profile}
         <Avatar avatar={profile.avatar} />
         <PersonInfo name={profile.name} surname={profile.surname} />
         <Links links={profile.links} />
+      {/if}
+
+      {#if !isLoading && !profile}
+        <span>Such profile doesn't exist</span>
       {/if}
     </div>
   </div>
@@ -49,6 +77,10 @@
     justify-content: center;
   }
 
+  .loading {
+    height: 300px;
+  }
+
   .card {
     max-width: 349px;
     width: 100%;
@@ -57,6 +89,7 @@
     padding: 48px 56px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     box-shadow: 0px 5px 35px
       color-mix(in srgb, var(--purple-hover), transparent 35%);

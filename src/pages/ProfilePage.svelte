@@ -47,6 +47,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Profile</title>
+</svelte:head>
+
 <ContentLayout>
   <FormLayout bind:ref={formRef} on:click={onSubmit} isDisabled={isUpdating}>
     <h1 slot="heading">Preview Profile</h1>

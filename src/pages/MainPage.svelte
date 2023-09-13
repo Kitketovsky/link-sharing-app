@@ -7,6 +7,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>Main</title>
+</svelte:head>
+
 <main>
   <div>
     Links Profile Details Preview Customize your links Add/edit/remove links
