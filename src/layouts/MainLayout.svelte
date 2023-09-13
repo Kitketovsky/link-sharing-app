@@ -1,13 +1,17 @@
 <script>
   import Loading from "../components/Loading.svelte";
+  import ToastContainer from "../components/ToastContainer.svelte";
   import { isLoading } from "../stores";
 </script>
 
 <main>
   {#if $isLoading}
     <Loading />
-  {:else}
+  {/if}
+
+  {#if !$isLoading}
     <slot />
+    <ToastContainer />
   {/if}
 </main>
 

@@ -7,11 +7,13 @@
 
   import LinkIcon from "./../assets/images/icon-link.svelte";
   import LogoutIcon from "./../assets/images/logout.svelte";
+  import ClipboardIcon from "./../assets/images/icon-link-copied-to-clipboard.svelte";
   import ProfileIcon from "./../assets/images/icon-profile-details-header.svelte";
   import { pathname, session } from "../stores";
 
   import PreviewIcon from "./../assets/images/icon-preview-header.svelte";
   import { supabase } from "../lib/db/supabase";
+  import { addToast } from "../lib/toast";
 
   $: isPreviewPage = $pathname === "/preview";
 
@@ -34,7 +36,10 @@
 
     await navigator.clipboard.writeText(sharableLink);
 
-    // TODO: show popup that link is copied
+    addToast({
+      text: "The link has been copied to your clipboard!",
+      icon: ClipboardIcon,
+    });
   }
 
   async function onLogout() {
@@ -91,7 +96,6 @@
     top: calc(100vh - 40px);
     transform: translateY(-100%);
     left: -5px;
-    /* top: 85vh; */
   }
   nav {
     position: sticky;
@@ -115,9 +119,18 @@
     margin: 1.5rem;
     border-radius: 12px;
 
+    & .logout-wrapper {
+      left: calc(-1.5rem - 5px);
+      top: calc(100vh - 40px - 1.5rem);
+    }
+
     @media screen and (max-width: 768px) {
       margin: 0;
       box-shadow: none;
+
+      & .logout-wrapper {
+        left: -5px;
+      }
     }
   }
 

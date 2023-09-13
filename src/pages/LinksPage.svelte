@@ -9,6 +9,8 @@
   import { supabase } from "../lib/db/supabase";
   import type { PostgrestError } from "@supabase/supabase-js";
   import ContentLayout from "../layouts/ContentLayout.svelte";
+  import { addToast } from "../lib/toast";
+  import ChangesSavedIcon from "./../assets/images/icon-changes-saved.svelte";
 
   let formRef: HTMLFormElement;
 
@@ -60,6 +62,11 @@
         status.error = error;
         console.log(error);
       }
+
+      addToast({
+        text: "Your changes have been successfully saved!",
+        icon: ChangesSavedIcon,
+      });
     } finally {
       status.updating = false;
     }

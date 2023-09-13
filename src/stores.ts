@@ -1,7 +1,7 @@
 import type { ILink } from "./types/ILink";
 import { writable } from "svelte/store";
 import options from "./conts/options";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v4 } from "uuid";
 
 import type { AuthSession } from "@supabase/supabase-js";
 
