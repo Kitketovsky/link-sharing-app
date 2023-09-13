@@ -30,5 +30,8 @@
     "svelte-routing": "^2.2.0",
     "type-fest": "^4.3.1",
     "uuid": "^9.0.0"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }
