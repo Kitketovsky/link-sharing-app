@@ -1,6 +1,6 @@
 <script lang="ts">
   import { globalHistory } from "svelte-routing/src/history";
-  import { Router, Route, navigate } from "svelte-routing";
+  import { Router, Route } from "svelte-routing";
   import { onMount } from "svelte";
   import Main from "./pages/MainPage.svelte";
   import Login from "./pages/LoginPage.svelte";
@@ -39,10 +39,6 @@
       session.set(sessionData.session);
 
       if (!sessionData.session) {
-        if (["/links", "/profile", "/preview"].includes($pathname)) {
-          navigate("/login");
-        }
-
         return null;
       }
 
@@ -50,10 +46,6 @@
 
       if (userRemoteData) {
         profile.set(userRemoteData);
-      }
-
-      if (["/login", "/signup"].includes($pathname)) {
-        navigate("/links");
       }
     } finally {
       isLoading.set(false);
@@ -64,12 +56,6 @@
     init();
 
     supabase.auth.onAuthStateChange((_event, _session) => {
-      console.log("Session: ", _session);
-
-      if (_session) {
-        init();
-      }
-
       session.set(_session);
     });
   });

@@ -6,7 +6,7 @@
   export let path: string;
 
   $: {
-    if (!isLoading && !session) {
+    if (!$isLoading && !$session) {
       navigate("/login");
     }
   }

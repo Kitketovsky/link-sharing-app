@@ -5,7 +5,7 @@
   import { Link, navigate } from "svelte-routing";
   import AuthFormLayout from "../layouts/AuthFormLayout.svelte";
   import { AuthError } from "@supabase/supabase-js";
-  import { session } from "../stores";
+  import { isLoading, session } from "../stores";
   import Button from "../components/Button.svelte";
   import { supabase } from "../lib/db/supabase";
   import CenteredLayout from "../layouts/CenteredLayout.svelte";
@@ -18,15 +18,21 @@
     password,
   };
 
+  $: {
+    if (!$isLoading && $session) {
+      navigate("/links");
+    }
+  }
+
   let signInError: AuthError | null = null;
-  let isLoading = false;
+  let isSigningIn = false;
 
   async function onSubmit(event: SubmitEvent) {
     const isFormValid = (event.target as HTMLFormElement).checkValidity();
 
     if (!isFormValid) return;
 
-    isLoading = true;
+    isSigningIn = true;
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email: form.email,
@@ -35,12 +41,12 @@
 
     if (error) {
       signInError = error;
-      isLoading = false;
+      isSigningIn = false;
       return;
     }
 
     session.set(data.session);
-    isLoading = false;
+    isSigningIn = false;
     navigate("/links");
   }
 </script>
@@ -65,7 +71,7 @@
         type="email"
         placeholder="e.g. alex@email.com"
         required
-        disabled={isLoading}
+        disabled={isSigningIn}
       />
 
       <Input
@@ -77,10 +83,10 @@
         placeholder="Enter your password"
         minlength="8"
         required
-        disabled={isLoading}
+        disabled={isSigningIn}
       />
 
-      <Button type="submit" label="Login" isDisabled={isLoading} />
+      <Button type="submit" label="Login" isDisabled={isSigningIn} />
     </svelte:fragment>
 
     <span slot="error">{signInError ? signInError.message : ""}</span>

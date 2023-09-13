@@ -3,7 +3,7 @@
   import type { HTMLButtonAttributes } from "svelte/elements";
 
   export let isDisabled = false;
-  export let label: string;
+  export let label: string = "";
   export let mode: "primary" | "secondary" = "primary";
   export let type: HTMLButtonAttributes["type"] = "button";
   export let isFullWidth = false;
@@ -50,6 +50,11 @@
     background-color: var(--purple);
     color: var(--white);
 
+    & .icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
     &:has(.icon) {
       @media screen and (max-width: 768px) {
         padding: 11px 16px;
@@ -67,7 +72,7 @@
     &[data-mode="secondary"] {
       color: var(--purple);
       outline: 1px solid var(--purple);
-      background-color: transparent;
+      background-color: var(--white);
 
       &:active,
       &:hover {

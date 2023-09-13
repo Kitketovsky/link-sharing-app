@@ -6,10 +6,12 @@
   import TabLink from "./TabLink.svelte";
 
   import LinkIcon from "./../assets/images/icon-link.svelte";
+  import LogoutIcon from "./../assets/images/logout.svelte";
   import ProfileIcon from "./../assets/images/icon-profile-details-header.svelte";
   import { pathname, session } from "../stores";
 
   import PreviewIcon from "./../assets/images/icon-preview-header.svelte";
+  import { supabase } from "../lib/db/supabase";
 
   $: isPreviewPage = $pathname === "/preview";
 
@@ -33,6 +35,11 @@
     await navigator.clipboard.writeText(sharableLink);
 
     // TODO: show popup that link is copied
+  }
+
+  async function onLogout() {
+    await supabase.auth.signOut();
+    navigate("/login");
   }
 </script>
 
@@ -60,17 +67,32 @@
       </TabLink>
     </div>
 
-    <Button
-      label="Preview"
-      mode="secondary"
-      on:click={() => navigate("/preview")}
-    >
-      <PreviewIcon />
-    </Button>
+    <div>
+      <Button
+        label="Preview"
+        mode="secondary"
+        on:click={() => navigate("/preview")}
+      >
+        <PreviewIcon />
+      </Button>
+    </div>
   {/if}
+
+  <div class="logout-wrapper">
+    <Button label="Log Out" mode="secondary" on:click={onLogout}>
+      <LogoutIcon />
+    </Button>
+  </div>
 </nav>
 
 <style>
+  .logout-wrapper {
+    position: absolute;
+    top: calc(100vh - 40px);
+    transform: translateY(-100%);
+    left: -5px;
+    /* top: 85vh; */
+  }
   nav {
     position: sticky;
     top: 0;

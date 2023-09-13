@@ -2,12 +2,12 @@
   import Input from "../components/Input.svelte";
   import EmailIcon from "../assets/images/icon-email.svelte";
   import PasswordIcon from "../assets/images/icon-password.svelte";
-  import { Link } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
   import Button from "../components/Button.svelte";
   import { supabase } from "../lib/db/supabase";
 
   import type { AuthError } from "@supabase/supabase-js";
-  import { session } from "../stores";
+  import { isLoading, session } from "../stores";
   import AuthFormLayout from "../layouts/AuthFormLayout.svelte";
   import CenteredLayout from "../layouts/CenteredLayout.svelte";
 
@@ -17,7 +17,13 @@
 
   let signUpError: AuthError | null = null;
   let isSuccess = false;
-  let isLoading = false;
+  let isSigningUp = false;
+
+  $: {
+    if (!$isLoading && $session) {
+      navigate("/links");
+    }
+  }
 
   $: form = {
     email,
@@ -29,7 +35,7 @@
 
   async function onSubmit(event: SubmitEvent) {
     isPasswordsEqual = password === confirm;
-    isLoading = true;
+    isSigningUp = true;
 
     if (
       !isPasswordsEqual ||
@@ -45,12 +51,12 @@
 
     if (error) {
       signUpError = error;
-      isLoading = false;
+      isSigningUp = false;
       return;
     }
 
     session.set(data.session);
-    isLoading = false;
+    isSigningUp = false;
     isSuccess = true;
   }
 </script>
@@ -75,7 +81,7 @@
         type="email"
         placeholder="e.g. alex@email.com"
         required
-        disabled={isLoading}
+        disabled={isSigningUp}
       />
 
       <Input
@@ -87,7 +93,7 @@
         placeholder="At least 8 characters"
         minlength="8"
         required
-        disabled={isLoading}
+        disabled={isSigningUp}
       />
 
       <Input
@@ -100,10 +106,14 @@
         minlength="8"
         required
         errorMessage={isPasswordsEqual ? null : "Not equal"}
-        disabled={isLoading}
+        disabled={isSigningUp}
       />
 
-      <Button type="submit" label="Create new account" isDisabled={isLoading} />
+      <Button
+        type="submit"
+        label="Create new account"
+        isDisabled={isSigningUp}
+      />
     </svelte:fragment>
 
     <span slot="success"
