@@ -23,6 +23,10 @@
     width: 40%;
     min-width: 375px;
 
+    @media screen and (max-width: 1024px) {
+      display: none;
+    }
+
     & .phone {
       width: 308px;
       min-height: 632px;

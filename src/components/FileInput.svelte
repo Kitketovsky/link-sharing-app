@@ -127,6 +127,13 @@
     display: flex;
     align-items: center;
     column-gap: 1.5rem;
+
+    @media screen and (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      row-gap: 0.5rem;
+    }
   }
 
   .upload {
@@ -142,6 +149,10 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.25rem;
+
+    @media screen and (max-width: 768px) {
+      display: block;
+    }
   }
 
   label:hover .change-image {

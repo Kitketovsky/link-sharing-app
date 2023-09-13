@@ -23,6 +23,10 @@ html {
   --red: #ff3939;
 
   color: var(--dark-grey);
+
+  --screen-large: 1024px;
+  /* if window.size < 1024px, remove Phone component */
+  /* < 768px goes mobile */
 }
 
 a {

@@ -27,6 +27,10 @@
     display: flex;
     flex-direction: column;
     row-gap: 2.5rem;
+
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
   }
 
   .header :global(h1) {

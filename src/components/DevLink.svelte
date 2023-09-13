@@ -40,6 +40,9 @@
     display: flex;
     flex-direction: column;
     row-gap: 0.75rem;
+    border-radius: 12px;
+    background-color: var(--light-grey);
+    padding: 20px;
   }
 
   .header {

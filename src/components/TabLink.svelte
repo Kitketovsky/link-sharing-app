@@ -33,6 +33,12 @@
     &:hover path {
       fill: var(--purple);
     }
+
+    & span {
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
+    }
   }
 
   button[data-active="true"] {

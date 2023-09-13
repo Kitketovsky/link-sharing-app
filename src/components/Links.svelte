@@ -7,7 +7,7 @@
   export let links: ILink[] | null = null;
 
   $: {
-    links = links?.length ? links : $profile.links;
+    links = $profile.links.length ? $profile.links : links;
   }
 
   $: phoneLinks = links

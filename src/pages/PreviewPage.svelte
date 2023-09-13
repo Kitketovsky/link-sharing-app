@@ -34,5 +34,10 @@
     align-items: center;
     box-shadow: 0px 5px 35px
       color-mix(in srgb, var(--purple-hover), transparent 35%);
+
+    @media screen and (max-width: 768px) {
+      box-shadow: none;
+      padding: 1rem 0;
+    }
   }
 </style>

@@ -54,48 +54,64 @@
       Add your details to create a personal touch to your profile.
     </span>
 
-    <div class="input-wrapper">
+    <div class="input-wrapper background">
       <label for="avatar">Profile picture</label>
       <FileInput bind:file={$profile.avatar} />
     </div>
 
-    <div class="input-wrapper">
-      <label for="name">First name</label>
-      <Input
-        id="name"
-        placeholder="e.g. John"
-        bind:value={$profile.name}
-        required
-      />
-    </div>
+    <div class="background">
+      <div class="input-wrapper">
+        <label for="name">First name</label>
+        <Input
+          id="name"
+          placeholder="e.g. John"
+          bind:value={$profile.name}
+          required
+        />
+      </div>
 
-    <div class="input-wrapper">
-      <label for="surname">Last name</label>
-      <Input
-        id="surname"
-        placeholder="e.g. Appleseed"
-        bind:value={$profile.surname}
-        required
-      />
-    </div>
+      <div class="input-wrapper">
+        <label for="surname">Last name</label>
+        <Input
+          id="surname"
+          placeholder="e.g. Appleseed"
+          bind:value={$profile.surname}
+          required
+        />
+      </div>
 
-    <div class="input-wrapper">
-      <label for="email">Email</label>
-      <Input
-        id="email"
-        placeholder="e.g. email@example.com"
-        bind:value={$profile.email}
-        type="email"
-        disabled={!$profile.name || !$profile.surname}
-      />
+      <div class="input-wrapper">
+        <label for="email">Email</label>
+        <Input
+          id="email"
+          placeholder="e.g. email@example.com"
+          bind:value={$profile.email}
+          type="email"
+          disabled={!$profile.name || !$profile.surname}
+        />
+      </div>
     </div>
   </FormLayout>
 </ContentLayout>
 
 <style>
+  .background {
+    border-radius: 12px;
+    background-color: var(--light-grey);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+  }
   .input-wrapper {
     display: grid;
     grid-template-columns: minmax(120px, 180px) minmax(220px, 1fr);
+
+    @media screen and (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1rem;
+    }
 
     & label {
       display: flex;

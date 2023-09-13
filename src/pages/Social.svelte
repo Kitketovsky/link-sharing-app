@@ -27,6 +27,8 @@
   });
 </script>
 
+<!-- TODO: Show UI in case when there's no data for such user id -->
+
 <PreviewLayout>
   <div class="wrapper">
     <div class="card">

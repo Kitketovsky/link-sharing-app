@@ -6,7 +6,7 @@
 
   $: {
     name = name || $profile.name;
-    surname = surname || $profile.name;
+    surname = surname || $profile.surname;
   }
 
   $: fullname = `${name} ${surname}`.trim();
@@ -14,7 +14,7 @@
 
 <div class="info">
   {#if fullname}
-    <span class="heading-s fullname">{fullname}</span>
+    <span class="heading-m fullname">{fullname}</span>
   {:else}
     <div class="skeleton skeleton-fullname"></div>
   {/if}
