@@ -1,4 +1,10 @@
-<div><span>Loading...</span></div>
+<script>
+  import Spinner from "./Spinner.svelte";
+</script>
+
+<div>
+  <Spinner />
+</div>
 
 <style>
   div {

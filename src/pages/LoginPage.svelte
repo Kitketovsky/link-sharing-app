@@ -8,6 +8,7 @@
   import { session } from "../stores";
   import Button from "../components/Button.svelte";
   import { supabase } from "../lib/db/supabase";
+  import CenteredLayout from "../layouts/CenteredLayout.svelte";
 
   let email = "";
   let password = "";
@@ -48,43 +49,45 @@
   <title>Login</title>
 </svelte:head>
 
-<AuthFormLayout on:submit={onSubmit}>
-  <svelte:fragment slot="heading">Login</svelte:fragment>
-  <svelte:fragment slot="description"
-    >Add your details below to get back into the app</svelte:fragment
-  >
+<CenteredLayout>
+  <AuthFormLayout on:submit={onSubmit}>
+    <svelte:fragment slot="heading">Login</svelte:fragment>
+    <svelte:fragment slot="description"
+      >Add your details below to get back into the app</svelte:fragment
+    >
 
-  <svelte:fragment slot="body">
-    <Input
-      label="Email address"
-      id="email"
-      bind:value={email}
-      icon={EmailIcon}
-      type="email"
-      placeholder="e.g. alex@email.com"
-      required
-      disabled={isLoading}
-    />
+    <svelte:fragment slot="body">
+      <Input
+        label="Email address"
+        id="email"
+        bind:value={email}
+        icon={EmailIcon}
+        type="email"
+        placeholder="e.g. alex@email.com"
+        required
+        disabled={isLoading}
+      />
 
-    <Input
-      id="password"
-      label="Password"
-      bind:value={password}
-      icon={PasswordIcon}
-      type="password"
-      placeholder="Enter your password"
-      minlength="8"
-      required
-      disabled={isLoading}
-    />
+      <Input
+        id="password"
+        label="Password"
+        bind:value={password}
+        icon={PasswordIcon}
+        type="password"
+        placeholder="Enter your password"
+        minlength="8"
+        required
+        disabled={isLoading}
+      />
 
-    <Button type="submit" label="Login" isDisabled={isLoading} />
-  </svelte:fragment>
+      <Button type="submit" label="Login" isDisabled={isLoading} />
+    </svelte:fragment>
 
-  <span slot="error">{signInError ? signInError.message : ""}</span>
+    <span slot="error">{signInError ? signInError.message : ""}</span>
 
-  <svelte:fragment slot="footer">
-    <span>Don't have an account?</span>
-    <Link to="/signup">Create account</Link>
-  </svelte:fragment>
-</AuthFormLayout>
+    <svelte:fragment slot="footer">
+      <span>Don't have an account?</span>
+      <Link to="/signup">Create account</Link>
+    </svelte:fragment>
+  </AuthFormLayout>
+</CenteredLayout>

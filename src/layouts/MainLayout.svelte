@@ -1,14 +1,14 @@
 <script>
   import Loading from "../components/Loading.svelte";
-  import { isLoading, session } from "../stores";
+  import { isLoading } from "../stores";
 </script>
 
 <main>
   {#if $isLoading}
     <Loading />
+  {:else}
+    <slot />
   {/if}
-
-  <slot />
 </main>
 
 <style>

@@ -7,11 +7,33 @@
 
   import LinkIcon from "./../assets/images/icon-link.svelte";
   import ProfileIcon from "./../assets/images/icon-profile-details-header.svelte";
-  import { pathname } from "../stores";
+  import { pathname, session } from "../stores";
 
   import PreviewIcon from "./../assets/images/icon-preview-header.svelte";
 
   $: isPreviewPage = $pathname === "/preview";
+
+  async function onShareLink() {
+    const result = await navigator.permissions.query({
+      // @ts-ignore
+      name: "clipboard-write",
+    });
+
+    if (result.state !== "granted") {
+      // TOOD: show a modal with the link as you can not write to clipboard
+      return;
+    }
+
+    const domain = import.meta.env.DEV
+      ? import.meta.env.VITE_DOMAIN_DEV
+      : import.meta.env.VITE_DOMAIN_PROD;
+
+    const sharableLink = `${domain}/l/${$session?.user.id}`;
+
+    await navigator.clipboard.writeText(sharableLink);
+
+    // TODO: show popup that link is copied
+  }
 </script>
 
 <nav data-preview={isPreviewPage}>
@@ -21,7 +43,7 @@
       mode="secondary"
       on:click={() => navigate("/links")}
     />
-    <Button label="Share Link" />
+    <Button label="Share Link" on:click={onShareLink} />
   {:else}
     <div class="logo">
       <LargeLogoIcon />

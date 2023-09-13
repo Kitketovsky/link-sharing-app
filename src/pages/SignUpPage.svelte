@@ -9,6 +9,7 @@
   import type { AuthError } from "@supabase/supabase-js";
   import { session } from "../stores";
   import AuthFormLayout from "../layouts/AuthFormLayout.svelte";
+  import CenteredLayout from "../layouts/CenteredLayout.svelte";
 
   let email = "";
   let password = "";
@@ -58,60 +59,62 @@
   <title>Sign Up</title>
 </svelte:head>
 
-<AuthFormLayout on:submit={onSubmit}>
-  <svelte:fragment slot="heading">Create account</svelte:fragment>
-  <svelte:fragment slot="description"
-    >Let’s get you started sharing your links!</svelte:fragment
-  >
+<CenteredLayout>
+  <AuthFormLayout on:submit={onSubmit}>
+    <svelte:fragment slot="heading">Create account</svelte:fragment>
+    <svelte:fragment slot="description"
+      >Let’s get you started sharing your links!</svelte:fragment
+    >
 
-  <svelte:fragment slot="body">
-    <Input
-      label="Email address"
-      id="email"
-      bind:value={email}
-      icon={EmailIcon}
-      type="email"
-      placeholder="e.g. alex@email.com"
-      required
-      disabled={isLoading}
-    />
+    <svelte:fragment slot="body">
+      <Input
+        label="Email address"
+        id="email"
+        bind:value={email}
+        icon={EmailIcon}
+        type="email"
+        placeholder="e.g. alex@email.com"
+        required
+        disabled={isLoading}
+      />
 
-    <Input
-      id="password"
-      label="Create password"
-      bind:value={password}
-      icon={PasswordIcon}
-      type="password"
-      placeholder="At least 8 characters"
-      minlength="8"
-      required
-      disabled={isLoading}
-    />
+      <Input
+        id="password"
+        label="Create password"
+        bind:value={password}
+        icon={PasswordIcon}
+        type="password"
+        placeholder="At least 8 characters"
+        minlength="8"
+        required
+        disabled={isLoading}
+      />
 
-    <Input
-      id="confirm-password"
-      label="Confirm password"
-      bind:value={confirm}
-      icon={PasswordIcon}
-      type="password"
-      placeholder="At least 8 characters"
-      minlength="8"
-      required
-      errorMessage={isPasswordsEqual ? null : "Not equal"}
-      disabled={isLoading}
-    />
+      <Input
+        id="confirm-password"
+        label="Confirm password"
+        bind:value={confirm}
+        icon={PasswordIcon}
+        type="password"
+        placeholder="At least 8 characters"
+        minlength="8"
+        required
+        errorMessage={isPasswordsEqual ? null : "Not equal"}
+        disabled={isLoading}
+      />
 
-    <Button type="submit" label="Create new account" isDisabled={isLoading} />
-  </svelte:fragment>
+      <Button type="submit" label="Create new account" isDisabled={isLoading} />
+    </svelte:fragment>
 
-  <span slot="success"
-    >{isSuccess ? "We send an email to confirm your identity" : ""}</span
-  >
+    <span slot="success"
+      >{isSuccess ? "We send an email to confirm your identity" : ""}</span
+    >
 
-  <span slot="error">{signUpError ? signUpError.message : ""}</span>
+    <span slot="error">{signUpError ? signUpError.message : ""}</span>
 
-  <svelte:fragment slot="footer">
-    <span>Already have an account?</span>
-    <Link to="/login">Login</Link>
-  </svelte:fragment>
-</AuthFormLayout>
+    <svelte:fragment slot="footer">
+      <span>Already have an account?</span>
+      <Link to="/login">Login</Link>
+    </svelte:fragment>
+  </AuthFormLayout>
+</CenteredLayout>

@@ -8,6 +8,7 @@
   import type { ILink } from "../types/ILink";
   import PreviewLayout from "../layouts/PreviewLayout.svelte";
   import clsx from "clsx";
+  import Spinner from "../components/Spinner.svelte";
   export let id: string;
 
   let isLoading = true;
@@ -47,13 +48,11 @@
   {/if}
 </svelte:head>
 
-<!-- TODO: Show UI in case when there's no data for such user id -->
-
 <PreviewLayout>
   <div class="wrapper">
     <div class={clsx({ card: true, loading: isLoading })}>
       {#if isLoading}
-        <span>Loading...</span>
+        <Spinner />
       {/if}
 
       {#if !isLoading && profile}

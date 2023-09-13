@@ -30,31 +30,10 @@
     document.body.dataset.path = $pathname;
   }
 
-  // onMount(() => {
-  //   let channel = supabase.channel("main");
-
-  //   channel
-  //     .on<TablesRow<"users">>(
-  //       "postgres_changes",
-  //       {
-  //         event: "UPDATE",
-  //         schema: "public",
-  //         table: "users",
-  //       },
-  //       (payload) => {
-  //       },
-  //     )
-  //     .subscribe();
-
-  //   return () => {
-  //     if (channel) {
-  //       supabase.removeChannel(channel);
-  //     }
-  //   };
-  // });
-
   async function init() {
     try {
+      isLoading.set(true);
+
       const { data: sessionData } = await supabase.auth.getSession();
 
       session.set(sessionData.session);
@@ -85,6 +64,10 @@
     init();
 
     supabase.auth.onAuthStateChange((_event, _session) => {
+      if (_session) {
+        init();
+      }
+
       session.set(_session);
     });
   });
