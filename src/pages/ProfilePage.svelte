@@ -26,8 +26,9 @@
 
         const { error } = await supabase.storage
           .from("images")
-          .upload($session.user.id, avatar, {
+          .update($session.user.id, avatar, {
             contentType: `image/${fileExt}`,
+            upsert: true,
           });
 
         if (error) {

@@ -9,6 +9,7 @@
   import Button from "../components/Button.svelte";
   import { supabase } from "../lib/db/supabase";
   import CenteredLayout from "../layouts/CenteredLayout.svelte";
+  import { setInitialData } from "../lib/db/setInitialData";
 
   let email = "";
   let password = "";
@@ -45,9 +46,7 @@
       return;
     }
 
-    session.set(data.session);
-    isSigningIn = false;
-    navigate("/links");
+    setInitialData();
   }
 </script>
 
