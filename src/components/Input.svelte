@@ -117,7 +117,7 @@
 
     &:focus,
     &:active {
-      outline: 1px solid var(--purple);
+      border: 1px solid var(--purple);
     }
   }
 
@@ -127,7 +127,7 @@
     }
 
     & input {
-      outline: 1px solid var(--red);
+      border: 1px solid var(--red);
     }
   }
 

@@ -51,7 +51,7 @@
     overflow: hidden;
 
     &:has(img) {
-      outline: 6px solid var(--purple);
+      border: 6px solid var(--purple);
     }
   }
 

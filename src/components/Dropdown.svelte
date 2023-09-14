@@ -91,7 +91,7 @@
     cursor: pointer;
 
     &:focus {
-      outline: 1px solid var(--purple);
+      border: 1px solid var(--purple);
     }
 
     & img {
@@ -126,7 +126,7 @@
     overflow: auto;
     margin-top: 10px;
     position: absolute;
-    outline: 1px solid var(--borders);
+    border: 1px solid var(--borders);
     width: 100%;
     z-index: 10;
     max-height: 300px;
@@ -150,7 +150,7 @@
 
   .option:focus,
   .option:hover {
-    outline: none;
+    border: none;
     color: var(--purple);
   }
 

@@ -71,7 +71,7 @@
 
     &[data-mode="secondary"] {
       color: var(--purple);
-      outline: 1px solid var(--purple);
+      border: 1px solid var(--purple);
       background-color: var(--white);
 
       &:active,
