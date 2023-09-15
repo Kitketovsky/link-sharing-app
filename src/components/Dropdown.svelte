@@ -1,7 +1,6 @@
 <script lang="ts">
   import ChevronDown from "./../assets/images/icon-chevron-down.svg";
   import type { IOptions } from "../conts/options";
-  import { onMount } from "svelte";
 
   export let options: IOptions = [];
   export let value: string;
@@ -14,20 +13,14 @@
 
   $: selected = options.find(({ id }) => id === value);
 
-  onMount(() => {
-    function callback(event: Event) {
-      if (!wrapperRef.contains(event.target as HTMLElement)) {
-        isOpen = false;
-      }
+  function onWrapperOutsideClickHandler(event: Event) {
+    if (!wrapperRef.contains(event.target as HTMLElement)) {
+      isOpen = false;
     }
-
-    window.addEventListener("click", callback);
-
-    return function () {
-      window.removeEventListener("click", callback);
-    };
-  });
+  }
 </script>
+
+<svelte:window on:click={onWrapperOutsideClickHandler} />
 
 <div class="wrapper body-m" bind:this={wrapperRef}>
   <label for="platform" class="body-s">Platform</label>
@@ -153,8 +146,4 @@
     border: none;
     color: var(--purple);
   }
-
-  /* .option + .option {
-    margin-top: 24px;
-  } */
 </style>

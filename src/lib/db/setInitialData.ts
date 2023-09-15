@@ -1,4 +1,4 @@
-import { isLoading, profile, session } from "../../stores";
+import { isLoading, profile } from "../../stores";
 import { loadInitialData } from "./loadInitialData";
 import { supabase } from "./supabase";
 

@@ -60,5 +60,7 @@
     width: 104px;
     height: 104px;
     border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
   }
 </style>

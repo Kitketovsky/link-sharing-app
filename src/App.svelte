@@ -1,11 +1,11 @@
 <script lang="ts">
   import { globalHistory } from "svelte-routing/src/history";
   import { Router, Route } from "svelte-routing";
-  import { afterUpdate, beforeUpdate, onMount } from "svelte";
+  import { onMount } from "svelte";
   import Main from "./pages/MainPage.svelte";
   import Login from "./pages/LoginPage.svelte";
   import SignUp from "./pages/SignUpPage.svelte";
-  import { isLoading, pathname, profile, remote, session } from "./stores";
+  import { pathname, session } from "./stores";
 
   import { supabase } from "./lib/db/supabase";
   import Social from "./pages/Social.svelte";
@@ -34,7 +34,6 @@
     setInitialData();
 
     supabase.auth.onAuthStateChange((_event, _session) => {
-      console.log(_event);
       session.set(_session);
     });
   });

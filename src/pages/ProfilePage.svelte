@@ -19,6 +19,7 @@
 
     try {
       if (!$session) return;
+
       const { name, surname, email, avatar } = $profile;
 
       if (avatar && avatar instanceof File) {
@@ -26,7 +27,7 @@
 
         const { error } = await supabase.storage
           .from("images")
-          .update($session.user.id, avatar, {
+          .upload($session.user.id, avatar, {
             contentType: `image/${fileExt}`,
             upsert: true,
           });
@@ -68,7 +69,7 @@
 
     <div class="input-wrapper background">
       <label for="avatar">Profile picture</label>
-      <FileInput bind:file={$profile.avatar} />
+      <FileInput />
     </div>
 
     <div class="background">

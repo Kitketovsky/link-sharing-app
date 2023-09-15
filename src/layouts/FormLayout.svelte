@@ -1,11 +1,28 @@
 <script lang="ts">
   import Button from "../components/Button.svelte";
+  import { profile, remoteData } from "../stores";
 
   export let ref: HTMLFormElement;
   export let isDisabled = false;
+
+  $: isFormTheSame =
+    $profile.name === $remoteData?.name &&
+    $profile.surname === $remoteData.surname &&
+    $profile.email === $remoteData.email &&
+    $profile.links.length === $remoteData.links.length &&
+    $profile.links.every((profileLink) => {
+      const remoteLink = $remoteData?.links.find(
+        (remoteLink) => remoteLink.id === profileLink.id,
+      );
+
+      return (
+        remoteLink?.platform === profileLink.platform &&
+        remoteLink.url === profileLink.url
+      );
+    }) &&
+    $profile.avatar === $remoteData.avatar;
 </script>
 
-<!-- pass bind:this to parent -->
 <form novalidate bind:this={ref}>
   <div class="header">
     <slot name="heading" />
@@ -17,7 +34,12 @@
   </div>
 
   <div class="footer">
-    <Button label="Save" type="button" {isDisabled} on:click />
+    <Button
+      label="Save"
+      type="button"
+      isDisabled={isDisabled || isFormTheSame}
+      on:click
+    />
   </div>
 </form>
 

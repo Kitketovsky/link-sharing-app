@@ -21,15 +21,11 @@
     surname: string;
   } | null = null;
 
-  onMount(() => {
+  onMount(async () => {
     if (id) {
-      loadInitialData(id)
-        .then((data) => {
-          profile = data;
-        })
-        .finally(() => {
-          isLoading = false;
-        });
+      const databaseProfileData = await loadInitialData(id);
+      profile = databaseProfileData;
+      isLoading = false;
     }
   });
 </script>

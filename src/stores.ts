@@ -1,12 +1,24 @@
 import type { ILink } from "./types/ILink";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import options from "./conts/options";
-import { v4 as uuidv4, v4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import type { AuthSession } from "@supabase/supabase-js";
 
+export const remoteData = writable<{
+  name: string;
+  surname: string;
+  avatar: File | string | null;
+  email: string;
+  links: ILink[];
+} | null>(null);
+
 function createProfileStore() {
-  const { subscribe, update, set } = writable<{
+  const {
+    subscribe,
+    update,
+    set: setStore,
+  } = writable<{
     name: string;
     surname: string;
     avatar: File | string | null;
@@ -23,7 +35,18 @@ function createProfileStore() {
   return {
     subscribe,
 
-    set,
+    set: (arg: any) => {
+      if (!get(remoteData)) {
+        remoteData.set({
+          ...arg,
+          links: [...arg.links].slice(),
+        });
+      }
+
+      setStore(arg);
+    },
+
+    remoteData,
 
     addNewLink: () =>
       update((prev) => {
@@ -58,19 +81,27 @@ function createProfileStore() {
 
     changeLink: (linkId: string, platform: string, event?: Event) =>
       update((prev) => {
-        const targetLink = prev.links.find((link) => link.id === linkId);
+        const updatedLinks = prev.links.map((link) => {
+          if (link.id === linkId) {
+            const updated = {
+              ...link,
+            };
 
-        if (!targetLink) return prev;
+            if (event) {
+              updated.url = (event.target as HTMLInputElement).value;
+            } else {
+              updated.platform = platform;
+            }
 
-        if (event) {
-          targetLink.url = (event.target as HTMLInputElement).value;
-        } else {
-          targetLink.platform = platform;
-        }
+            return updated;
+          }
+
+          return link;
+        });
 
         return {
           ...prev,
-          links: prev.links,
+          links: updatedLinks,
         };
       }),
   };
@@ -81,11 +112,3 @@ export const session = writable<AuthSession | null>(null);
 export const profile = createProfileStore();
 
 export const isLoading = writable(true);
-
-export const remote = writable<{
-  name: string | null;
-  surname: string | null;
-  avatar: string | null;
-  email: string | null;
-  links: ILink[] | null;
-} | null>(null);

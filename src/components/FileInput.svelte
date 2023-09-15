@@ -4,7 +4,6 @@
   import UploadIcon from "./../assets/images/icon-upload-image.svelte";
 
   let previewDataURI: string | null = null;
-  export let file: File | string | null = null;
   let errorMessage: string | null = null;
 
   onMount(() => {
@@ -55,12 +54,12 @@
           image.remove();
         };
 
-        // data uri, for preview
+        // data uri, for preview locally
         previewDataURI = dataURI;
       };
 
       // binary, for uploading
-      file = fileInput.files![0];
+      $profile.avatar = fileInput.files![0];
     }
   }
 </script>
@@ -119,7 +118,9 @@
       position: absolute;
       inset: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
   }
 

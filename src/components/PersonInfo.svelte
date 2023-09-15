@@ -4,12 +4,11 @@
   export let name: string = "";
   export let surname: string = "";
 
-  $: {
-    name = name || $profile.name;
-    surname = surname || $profile.surname;
-  }
+  // In Social.svelte we need data from parent component
+  $: localName = name || $profile.name;
+  $: localSurname = surname || $profile.surname;
 
-  $: fullname = `${name} ${surname}`.trim();
+  $: fullname = `${localName} ${localSurname}`.trim();
 </script>
 
 <div class="info">
